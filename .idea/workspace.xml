@@ -2,176 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5af6be34-55c3-47be-b6c1-44db4a1d60e4" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/__init__.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/__init__.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/admin.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/apps.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/forms.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/migrations/0001_initial.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/migrations/0002_auto_20180118_0214.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/migrations/0003_auto_20180118_0248.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/migrations/0004_auto_20180118_1315.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/migrations/0005_auto_20180118_1323.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/migrations/0006_auto_20180118_1337.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/migrations/0007_funcaoarquivo_sigla_funcao.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/migrations/__init__.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/models.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/tests.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/carregaarquivo/views.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/cliente/migrations/0008_cliente_nome_artistico.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/jadeproducoesculturais/templates/jadeproducoesculturais/jadebase.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/jadeproducoesculturais/views.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/media/EsquemaDeProduçãoSarau.xlsx" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/media/MandéMoubá-Planilha-Orçamentária-v2HAB.xls" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/media/Planilha-Orçamentária_-_Deixe_a_Luz_da_Varanda_Acesa.xlsx" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/media/PlanilhaOrçamentária-II-Edição-RaízesAfricanas_-_V3.xlsx" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/media/Plano_de_Trabalho_-_Orcamento-3º-Bloco_VTT.xls" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/media/Sabugo-Plano_de_Divulgação_-_2015.xls" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/media/WebGuia-Plano-de-Trabalho-Planilha-Orçamentária.xls" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/forms.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0012_auto_20171128_0151.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0013_remove_rubricaorcamento_total.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0014_auto_20171202_1516.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0015_auto_20171202_1519.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0016_auto_20171202_1524.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0017_auto_20171202_1544.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0018_auto_20171202_1547.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0019_auto_20171202_1549.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0020_auto_20171202_1602.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0021_auto_20171202_1605.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0022_auto_20171202_1606.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0023_auto_20171202_1612.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0024_auto_20171202_1828.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0025_auto_20171202_1925.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0026_auto_20171202_1930.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0027_auto_20171202_1935.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0028_auto_20171202_2233.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0029_auto_20171202_2311.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0030_auto_20171202_2312.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0031_auto_20171204_2206.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0032_auto_20171205_1846.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0033_auto_20171205_1847.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0034_auto_20171205_1849.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0035_auto_20171205_1850.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0036_pagamento.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0037_auto_20171205_2146.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0038_itempagamento.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0039_auto_20171223_2032.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0040_auto_20171225_2353.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0041_auto_20171228_2215.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0042_auto_20180102_0129.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0043_auto_20180102_0143.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0044_auto_20180102_0150.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0045_auto_20180102_0158.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0046_auto_20180102_0204.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0047_auto_20180102_1957.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0048_auto_20180102_2004.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0049_auto_20180116_1214.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0050_auto_20180116_2108.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/migrations/0051_auto_20180121_2356.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/carregaorcamento.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/controleorcamentario.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/editarubrica.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/eliminarubrica.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/exibe_planilha.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/exibeorcamento.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/exiberubrica.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/lista_planilhas_carregadas.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/listaorcamentos.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/novarubrica.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/pagamento.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/__init__.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/admin.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/apps.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/forms.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0001_initial.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0002_auto_20171226_0510.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0003_auto_20171226_2014.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0004_auto_20171226_2231.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0005_auto_20171226_2255.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0006_auto_20171228_0137.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0007_auto_20171228_1418.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0008_formacomprovacao_valor.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0009_auto_20171229_0330.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0010_auto_20171230_1543.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0011_auto_20171230_1629.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0012_auto_20171230_1939.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0013_auto_20171230_1941.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0014_auto_20171231_0004.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0015_auto_20171231_0007.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0016_auto_20171231_0123.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0017_auto_20171231_0124.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0018_auto_20171231_0257.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0019_auto_20171231_0309.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0020_auto_20171231_1647.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0021_auto_20171231_1649.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0022_auto_20171231_1726.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0023_auto_20180102_1444.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/0024_auto_20180103_0406.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/migrations/__init__.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/models.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/templates/pagamento/beneficiariopagamento.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/templates/pagamento/editadescontos.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/templates/pagamento/editaformacomprovacao.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/templates/pagamento/editaformapagamento.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/templates/pagamento/editaitempagamento.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/templates/pagamento/pagamento.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/templates/pagamento/pagamentos.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/templates/pagamento/rubricas_pagamentos.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/tests.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/urls.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/pagamento/views.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/forms.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0024_auto_20171205_1846.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0025_auto_20171228_0206.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0026_auto_20171228_1418.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0027_auto_20180102_1654.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0028_meta_tarefa.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0029_auto_20180114_2115.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0030_auto_20180114_2116.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0031_auto_20180114_2204.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0032_auto_20180114_2315.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0033_auto_20180114_2317.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0034_auto_20180114_2318.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0035_auto_20180114_2320.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0036_auto_20180114_2341.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/migrations/0037_auto_20180114_2342.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/templates/projeto/exibe_tarefas.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/templates/projeto/listaprojetos.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/projeto/urls.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/tarefas/__init__.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/tarefas/admin.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/tarefas/apps.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/tarefas/migrations/__init__.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/tarefas/models.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/tarefas/tests.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/tarefas/views.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/utils/migrations/0008_auto_20171208_0115.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/utils/migrations/0009_tabelairrf.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/utils/migrations/0010_aliquotainss_aliquotaiss.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/utils/migrations/0011_auto_20171228_1528.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/utils/migrations/0012_auto_20171228_1729.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/utils/migrations/0013_auto_20171229_0328.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/utils/migrations/0014_auto_20171231_1422.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/utils/migrations/0015_auto_20180102_0023.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/utils/utilitarios.py" />
-      <change beforePath="$PROJECT_DIR$/.idea/jadeproducoesculturais.iml" afterPath="$PROJECT_DIR$/.idea/jadeproducoesculturais.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/cliente/models.py" afterPath="$PROJECT_DIR$/cliente/models.py" />
-      <change beforePath="$PROJECT_DIR$/jadeproducoesculturais/settings.py" afterPath="$PROJECT_DIR$/jadeproducoesculturais/settings.py" />
-      <change beforePath="$PROJECT_DIR$/jadeproducoesculturais/urls.py" afterPath="$PROJECT_DIR$/jadeproducoesculturais/urls.py" />
-      <change beforePath="$PROJECT_DIR$/orcamento/models.py" afterPath="$PROJECT_DIR$/orcamento/models.py" />
-      <change beforePath="$PROJECT_DIR$/orcamento/templates/orcamento/orcamento.html" afterPath="$PROJECT_DIR$/orcamento/templates/orcamento/orcamento.html" />
-      <change beforePath="$PROJECT_DIR$/orcamento/urls.py" afterPath="$PROJECT_DIR$/orcamento/urls.py" />
-      <change beforePath="$PROJECT_DIR$/orcamento/views.py" afterPath="$PROJECT_DIR$/orcamento/views.py" />
-      <change beforePath="$PROJECT_DIR$/projeto/admin.py" afterPath="$PROJECT_DIR$/projeto/admin.py" />
-      <change beforePath="$PROJECT_DIR$/projeto/models.py" afterPath="$PROJECT_DIR$/projeto/models.py" />
-      <change beforePath="$PROJECT_DIR$/projeto/views.py" afterPath="$PROJECT_DIR$/projeto/views.py" />
-      <change beforePath="$PROJECT_DIR$/servidor.bat" afterPath="$PROJECT_DIR$/servidor.bat" />
-      <change beforePath="$PROJECT_DIR$/utils/admin.py" afterPath="$PROJECT_DIR$/utils/admin.py" />
-      <change beforePath="$PROJECT_DIR$/utils/models.py" afterPath="$PROJECT_DIR$/utils/models.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -185,7 +17,7 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/orcamento/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6138">
+            <state relative-caret-position="0">
               <caret line="292" column="27" lean-forward="false" selection-start-line="292" selection-start-column="4" selection-end-line="292" selection-end-column="27" />
               <folding>
                 <element signature="e#0#55#0" expanded="true" />
@@ -309,13 +141,14 @@
         <option value="$PROJECT_DIR$/orcamento/views.py" />
         <option value="$PROJECT_DIR$/orcamento/urls.py" />
         <option value="$PROJECT_DIR$/orcamento/models.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-7" />
-    <option name="y" value="93" />
-    <option name="width" value="1843" />
+    <option name="x" value="604" />
+    <option name="y" value="19" />
+    <option name="width" value="1533" />
     <option name="height" value="777" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -434,9 +267,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="93" width="1843" height="777" extended-state="0" />
+    <frame x="604" y="19" width="1533" height="777" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17515051" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21094266" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901832" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -472,13 +306,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/manage.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projeto/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -816,11 +643,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/orcamento/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6138">
+        <state relative-caret-position="0">
           <caret line="292" column="27" lean-forward="false" selection-start-line="292" selection-start-column="4" selection-end-line="292" selection-end-column="27" />
           <folding>
             <element signature="e#0#55#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
