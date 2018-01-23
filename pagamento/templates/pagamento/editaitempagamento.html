@@ -1,0 +1,12 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    <form action="{% url 'editaitempagamento' id_item=id_item %}" method="post" class="post-form">
+        {% csrf_token %}
+        <table class="table">
+                {{formulario.as_table}}
+        </table>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+{% endblock %}

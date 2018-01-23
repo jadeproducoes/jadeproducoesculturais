@@ -1,0 +1,35 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    {% if projetos %}
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nome do projeto</th>
+                    <th>Proponente</th>
+                    <th colspan="2">Orcamentos</th>
+                    <th>Pagamentos</th>
+                    <th>Tarefas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for projeto in projetos %}
+                    <tr>
+                        <td><a href="">{{projeto.nome_projeto}}</a></td>
+                        <td>{{projeto.cliente_projeto}}</td>
+                        <td><a href="{% url 'controleorcamentario' id_projeto=projeto.id %}">Controle</a> </td>
+                        <td><a href="{% url 'listaorcamentos' id=projeto.id %}">Elaboração</a> </td>
+                        <td><a href="{% url 'pagamentos' id_projeto=projeto.id %}">Pagamento</a></td>
+                        <td><a href="{% url 'tarefas' id_projeto=projeto.id %}">Tarefas</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p>Não existem projetos cadastrados</p>
+    {% endif %}
+
+{% endblock %}

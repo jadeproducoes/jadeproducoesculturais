@@ -1,0 +1,15 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+        <div class="content container">
+            <p>Elimina a rubrica <b> {{rubrica}}</b><br> do orçamento <b>{{orcamento}}</b><br> do projeto <b>{{projeto}}</b>?
+            </p>
+            <p>
+                <h3><a href="{% url 'eliminarubrica' id=id id_orcamento=id_orcamento %}">Eliminar!</a></h3>
+            </p>
+            <p>
+                <a href="{% url 'exibeorcamento' id=id_orcamento %}">Voltar ao orcamento</a>
+            </p>
+        </div>
+{% endblock %}

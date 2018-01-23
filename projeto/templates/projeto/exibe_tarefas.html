@@ -1,0 +1,152 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    {% if projeto %}
+        <table class="table table-bordered">
+            <tbody>
+                <tr bgcolor="#F0FFFF">
+                    <td>Nome do projeto: <b>{{projeto}}</b></td>
+                    <td><a href=""><button>Nova tarefa</button></a></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Tarefas PENDENTES (SEM ACOES REALIZADAS) -->
+        {% if pendentes %}
+            <div class="">
+                <p><b>Tarefas pendente (sem ações realizadas)</b></p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr align="center">
+                            <th>Nr</th>
+                            <th>Descrição</th>
+                            <th>Envolvidos</th>
+                            <th>Meta</th>
+                            <th>Prioridade</th>
+                            <th>Data da criação</th>
+                            <th>Data limite</th>
+                            <th>Editar</th>
+                            <th>Mudar status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, item in pendentes.items %}
+                            <tr bgcolor="{{item.cor_prioridade}}">
+                              <td align="center">{{forloop.counter}}</td>
+                              <td align="center">{{item.descricao}}</td>
+                              <td align="left">{{item.envolvidos|linebreaks}}</td>
+                              <td align="left">{{item.meta}}</td>
+                              <td align="center">{{item.prioridade}}</td>
+                              <td align="center">{{item.data_criacao|date:"d/m/Y"}}</td>
+                              <td align="center">{{item.data_limite|date:"d/m/Y"}}</td>
+                              <td align="center"><a href="{% url 'editatarefa' id_tarefa=key %}"><button>Editar</button></a></td>
+                              <td align="center">
+                                  <a href="{% url 'tarefaemandamento' id_tarefa=key %}">Em andamento</a><br>
+                                  <a href="{% url 'tarefaconcluida' id_tarefa=key %}">Concluída</a>
+                              </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-secondary">
+                Não existem <b>tarefas pendentes</b> para este projeto
+            </div>
+        {% endif %}
+
+        <!-- Tarefas EM ANDAMENTO -->
+        {% if em_andamento %}
+            <div class="">
+                <p><b>Tarefas em andamento</b></p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nr</th>
+                            <th>Descrição</th>
+                            <th>Envolvidos</th>
+                            <th>Meta</th>
+                            <th>Prioridade</th>
+                            <th>Data da criação</th>
+                            <th>Data limite</th>
+                            <th>Editar</th>
+                            <th>Mudar status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, item in em_andamento.items %}
+                            <tr bgcolor="{{item.cor_prioridade}}">
+                              <td align="center">{{forloop.counter}}</td>
+                              <td align="center">{{item.descricao}}</td>
+                              <td align="left">{{item.envolvidos|linebreaks}}</td>
+                              <td align="left">{{item.meta}}</td>
+                              <td align="center">{{item.prioridade}}</td>
+                              <td align="center">{{item.data_criacao|date:"d/m/Y"}}</td>
+                              <td align="center">{{item.data_limite|date:"d/m/Y"}}</td>
+                              <td align="center"><a href="{% url 'editatarefa' id_tarefa=key %}"><button>Editar</button></a></td>
+                              <td align="center">
+                                  <a href="{% url 'tarefapendente' id_tarefa=key %}">Voltar a pendente</a></br>
+                                  <a href="{% url 'tarefaconcluida' id_tarefa=key %}">Concluída</a>
+                              </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-secondary">
+                Não existem <b>tarefas em andamento</b> para este projeto
+            </div>
+        {% endif %}
+
+        <!-- Tarefas CONCLUIDAS -->
+        {% if concluidas %}
+            <div class="">
+                <p><b>Tarefas concluídas</b></p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nr</th>
+                            <th>Descrição</th>
+                            <th>Envolvidos</th>
+                            <th>Meta</th>
+                            <th>Prioridade</th>
+                            <th>Data da criação</th>
+                            <th>Data limite</th>
+                            <th>Editar</th>
+                            <th>Mudar status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, item in concluidas.items %}
+                            <tr bgcolor="{{item.cor_prioridade}}">
+                              <td align="center">{{forloop.counter}}</td>
+                              <td align="center">{{item.descricao}}</td>
+                              <td align="left">{{item.envolvidos|linebreaks}}</td>
+                              <td align="left">{{item.meta}}</td>
+                              <td align="center">{{item.prioridade}}</td>
+                              <td align="center">{{item.data_criacao|date:"d/m/Y"}}</td>
+                              <td align="center">{{item.data_limite|date:"d/m/Y"}}</td>
+                              <td align="center"><a href="{% url 'editatarefa' id_tarefa=key %}"><button>Editar</button></a></td>
+                              <td align="center">
+                                  <a href="{% url 'tarefapendente' id_tarefa=key %}">Voltar a pendente</a><br>
+                                  <a href="{% url 'tarefaemandamento' id_tarefa=key %}">Voltar a em andamento</a>
+                              </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-secondary">
+                Não existem <b>tarefas concluídas</b> para este projeto
+            </div>
+        {% endif %}
+
+    {% else %}
+        <div class="alert alert-secondary">
+            <p>Este projeto não existe</p>
+        </div>
+    {% endif %}
+
+{% endblock %}

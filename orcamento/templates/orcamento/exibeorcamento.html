@@ -1,0 +1,102 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    {% if orcamento.rubricas_orcamento %}
+        <p>Nome do projeto: <a href="{% url 'listaorcamentos' id=orcamento.projeto_associado.pk %}">
+                                {{ orcamento.projeto_associado }}
+                            </a>
+        </p>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>Identificação do orçamento: {{ orcamento.descricao_orcamento }} ({{orcamento.nr_itens}} itens)</td>
+                        {% if orcamento.orcamento_escolhido %}
+                            <td align="center" bgcolor="#ffe6e6">
+                                Este é o orçamento ativo
+                            </td>
+                            <td bgcolor="#ffcccc" align="center">
+                                <a href="{% url 'desativarorcamento' id=orcamento.pk %}">Desativar?</a>
+                            </td>
+                        {% else %}
+                            <td align="center" bgcolor="#ffe6e6">
+                                Este orçamento não está ativo
+                            </td>
+                            <td bgcolor="#ffcccc" align="center">
+                                <a href="{% url 'ativarorcamento' id=orcamento.pk %}">Ativar</a>
+                            </td>
+                        {% endif %}
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td align="center">Valor solicitado: {{ orcamento.valor_bruto|floatformat:2 }}</td>
+                    <td align="center">Total das glosas: {{ orcamento.valor_glosas|floatformat:2 }}</td>
+                    <td align="center">Valor líquido recebido: {{ orcamento.valor_liquido|floatformat:2 }}</td>
+                    <td align="center" bgcolor="#00FFFF">
+                        <a href="{% url 'novarubrica' id=orcamento.pk %}"><bold>Nova rubrica</bold></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr align="center" valign="middle">
+              <th scope="col">Nr</th>
+              <th scope="col">Rubrica</th>
+              <th scope="col">Descrição</th>
+              <th scope="col">Valor Solicitado</th>
+              <th scope="col">Valor da glosa</th>
+              <th scope="col">Quantidade</th>
+              <th scope="col">Concedido</th>
+              <th scope="col">Posicionar</th>
+              <th scope="col">Eliminar</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for rubrica in orcamento.rubricas_orcamento %}
+                <tr>
+                  <td align="center">{{rubrica.numero_rubrica}}</td>
+                  <td><a href="{% url 'editarubrica' id=rubrica.id %}">{{rubrica.identificacao_rubrica}}</a></td>
+                  <td>{{rubrica.descricao_rubrica}}</td>
+                  <td align="center">{{rubrica.valor_solicitado}}</td>
+                  <td align="center">{{rubrica.valor_da_glosa}}</td>
+                  <td align="center">{{rubrica.quantidade}}</td>
+                  <td align="center">{{rubrica.valor_liquido_rubrica|floatformat:2}}</td>
+                  <td align="center">
+                      {% if rubrica.numero_rubrica > 1 %}
+                            <a href="{% url 'primeirarubricadalista' id=rubrica.id %}">&uarr;</a>
+                            <a href="{% url 'umarubricacima' id=rubrica.id %}">&larr;</a>
+                      {% endif %}
+                      {% if rubrica.numero_rubrica < orcamento.nr_itens %}
+                          <a href="{% url 'umarubricabaixo' id=rubrica.id %}">&rarr;</a>
+                          <a href="{% url 'ultimarubricadalista' id=rubrica.id %}">&darr;</a>
+                      {% endif %}
+                  </td>
+                  <td align="center">
+                      <a href="{% url 'exiberubrica' id=rubrica.id id_orcamento=orcamento.pk %}">
+                          <h5>&otimes;</h5>
+                      </a>
+                  </td>
+                </tr>
+            {% endfor %}
+                <tr align="center">
+                    <td colspan="3">TOTAL</td>
+                    <td>{{ orcamento.valor_bruto|floatformat:2 }}</td>
+                    <td>{{ orcamento.valor_glosas|floatformat:2 }}</td>
+                    <td>-</td>
+                    <td>{{ orcamento.valor_liquido|floatformat:2 }}</td>
+                    <td>-</td>
+                    <td align="center">-</td>
+                </tr>
+          </tbody>
+     </table>
+    {% else %}
+        <p>Não existem itens cadastradas para este orçamento</p>
+        <a href="">Cadastrar itens</a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    <div class="">
+        <h5>Planilhas orçamentárias carregadas</h5>
+        <a href="{% url 'carrega_orcamento' %}">Carregar nova planilha</a>
+        {% if arquivos %}
+            <table class="table table-bordered">
+              <thead>
+                <tr align="center" valign="middle">
+                  <th scope="col">Nr</th>
+                  <th scope="col">Nome da planilha</th>
+                  <th scope="col">Descrição</th>
+                  <th scope="col">Data upload</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for arquivo in arquivos %}
+                    <tr>
+                      <td align="center">{{forloop.counter}}</td>
+                      <td align="left">
+                          <a href="{% url 'exibir_planilha' id_arquivo=arquivo.pk %}">{{arquivo.arquivo_carga}}</a>
+                      </td>
+                      <td align="left">{{arquivo.descricao}}</td>
+                      <td align="center">{{arquivo.data_uploaded|date:"d/m/y"}}</td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        {% else %}
+            Não existem arquivos de planilha cadastrados
+        {% endif %}
+    </div>
+{% endblock %}

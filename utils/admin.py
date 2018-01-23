@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(AreaCultural)
 admin.site.register(Pessoa)
 admin.site.register(UnidadeMedida)
+admin.site.register(TabelaIRRF)

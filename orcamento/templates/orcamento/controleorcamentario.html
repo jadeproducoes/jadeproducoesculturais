@@ -1,0 +1,69 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    {% if orcamento %}
+        <p>Nome do projeto: {{ orcamento_base.projeto_associado }}</p>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td align="center" bgcolor="#ffe6e6">Total utilizado (R$): {{total_usado|floatformat:2}}</td>
+                    <td align="center" bgcolor="#ffe6e6">Saldo (R$): {{total_saldo|floatformat:2}}</td>
+                    <td align="center" bgcolor="#F0FFFF">Valor solicitado (R$): {{ orcamento_base.valor_bruto|floatformat:2 }}</td>
+                    <td align="center" bgcolor="#F0FFFF">Total das glosas (R$): {{ orcamento_base.valor_glosas|floatformat:2 }}</td>
+                    <td align="center" bgcolor="#F0FFFF">Valor líquido recebido (R$): {{ orcamento_base.valor_liquido|floatformat:2 }}</td>
+                    <td align="center" bgcolor="#ffe6e6">
+                        <a href="{% url 'controle_excel' id_projeto=orcamento_base.projeto_associado.id %}">Salvar em Excel</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+          <thead>
+            <tr align="center" valign="middle" bgcolor="#ADD8E6">
+              <th scope="col">Nr</th>
+              <th scope="col">Rubrica</th>
+              <th scope="col">Descrição</th>
+              <th scope="col">Solicitado (R$)</th>
+              <th scope="col">Glosa (R$)</th>
+              <th scope="col">Quantidade</th>
+              <th scope="col">Total do item (R$)</th>
+              <th scope="col">Utilizado (R$)</th>
+              <th scope="col">Saldo (R$)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for linha in orcamento %}
+                <tr bgcolor="{{linha.cor}}">
+                  <td align="center">{{linha.rubrica.numero_rubrica}}</td>
+                  <td>{{linha.rubrica.identificacao_rubrica}}</td>
+                  <td>{{linha.rubrica.descricao_rubrica}}</td>
+                  <td align="center">{{linha.rubrica.valor_solicitado}}</td>
+                  <td align="center">{{linha.rubrica.valor_da_glosa}}</td>
+                  <td align="center">{{linha.rubrica.quantidade}}</td>
+                  <td align="center">{{linha.rubrica.valor_liquido_rubrica|floatformat:2}}</td>
+                  <td align="center">
+                      {{linha.utilizado|floatformat:2}} ({{linha.percentual_usado|floatformat:1}}%)
+                  </td>
+                  <td align="center">
+                      {{linha.saldo|floatformat:2}} ({{linha.percentual_saldo|floatformat:1}}%)
+                  </td>
+                </tr>
+            {% endfor %}
+                <tr align="center" bgcolor="#ADD8E6">
+                    <td colspan="3"><b>TOTAL</b></td>
+                    <td><b>{{ orcamento_base.valor_bruto|floatformat:2 }}</b></td>
+                    <td><b>{{ orcamento_base.valor_glosas|floatformat:2 }}</b></td>
+                    <td>-</td>
+                    <td><b>{{ orcamento_base.valor_liquido|floatformat:2 }}</b></td>
+                    <td align="center"><b>{{total_usado|floatformat:2}}</b></td>
+                    <td align="center"><b>{{total_saldo|floatformat:2}}</b></td>
+                </tr>
+          </tbody>
+     </table>
+    {% else %}
+        <p>Não existem itens cadastradas para este orçamento</p>
+        <a href="">Cadastrar itens</a>
+    {% endif %}
+{% endblock %}

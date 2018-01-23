@@ -1,0 +1,14 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+{% load static %}
+
+{% block conteudo %}
+    {% if upload.formulario %}
+        {{upload.cabecalho_formulario|safe}}
+        {% csrf_token %}
+        {{upload.formulario.as_table}}
+        {{upload.rodape_formulario|safe}}
+    {% else %}
+        <p> Não existe um formulariod de upload</p>
+    {% endif %}
+{% endblock %}

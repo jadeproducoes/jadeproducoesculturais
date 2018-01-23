@@ -5,3 +5,5 @@ from .models import *
 
 admin.site.register(Projeto)
 admin.site.register(FonteFinanciamento)
+admin.site.register(Meta)
+admin.site.register(Tarefa)

@@ -1,0 +1,13 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    <form action="{% url 'editaformacomprovacao' id_forma_comprovacao=id_forma_comprovacao %}" method="post" class="post-form">
+        {% csrf_token %}
+        <table class="table">
+                {{formulario.as_table}}
+        </table>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+        <a href="{% url 'pagamento' id_pagamento=formulario.instance.id_pagamento.pk %}">Voltar ao pagamento</a>
+    </form>
+{% endblock %}

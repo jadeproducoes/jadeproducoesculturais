@@ -1,0 +1,62 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    <p>Projeto: {{projeto.nome_projeto}}</p>
+    <table class="table table-bordered">
+        <tbody>
+            <tr bgcolor="#F0FFFF">
+                <td>Valor do orçamento: <b>R$ {{valor_total_orcamento|floatformat:2}}</b></td>
+                <td>Valor total dos pagamentos: <b>R$ {{valor_total_pagamentos|floatformat:2}}</b></td>
+                <td>Saldo: <b>R$ {{saldo|floatformat:2}}</b></td>
+            </tr>
+        </tbody>
+    </table>
+    {% if tabelaIRRF %}
+        <p><a href="{% url 'novopagamento' id_projeto=projeto.id %}"><b>Novo pagamento</b></a></p>
+    {% else %}
+        <div class="alert alert-danger">
+            <b>Não existe uma tabela ativa de imposto de renda! Não é possível realizar novos pagamentos!</b>
+        </div>
+    {% endif %}
+    <div class="">
+        {% if lista_pagamentos %}
+                {% csrf_token %}
+                <table class="table table-bordered">
+                  <thead>
+                    <tr align="center" valign="middle" bgcolor="#ADD8E6">
+                      <th scope="col">Nr</th>
+                      <th scope="col">Item(s)</th>
+                      <th scope="col">Beneficiário(a)</th>
+                      <th scope="col">Valor bruto</th>
+                      <th scope="col">Data</th>
+                      <th scope="col">Editar</th>
+                      <th scope="col">Pendencias</th>
+                      <td scope="col">Eliminar</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for id_pagamento, itens_pagamento, beneficiario, valor_pagamento, data_pagamento, pendencias in lista_pagamentos%}
+                        <tr bgcolor="{{pendencias.cor}}">
+                          <td align="center">{{forloop.counter}}</td>
+                          <td align="left">{{itens_pagamento|linebreaks}}</td>
+                          <td align="left">{% if beneficiario %}{{beneficiario}}{% endif %}</td>
+                          <td align="center">{{valor_pagamento}}</td>
+                          <td align="center">{{data_pagamento|date:"d/m/Y"}}</td>
+                          <td align="center"><a href="{% url 'pagamento' id_pagamento=id_pagamento %}">Editar</a></td>
+                          <td align="center">{{pendencias.msg|linebreaks}}</td>
+                          <td align="center">
+                              <a href="{% url 'eliminapagamento' id_pagamento=id_pagamento %}">
+                                <button>X</button>
+                              </a>
+                          </td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+        {% else %}
+            <p>Não existem pagamentos realizados para esse projeto</p>
+            <p><a href="{% url 'novopagamento' id_projeto=projeto.id%}">Realizar um pagamento</a></p>
+        {% endif %}
+    </div>
+{% endblock %}

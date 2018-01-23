@@ -1,0 +1,14 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    <div class="">
+        <h5>Nome da planilha: <b>{{nome_arquivo}}</b></h5>
+        <p><a href="{% url 'planilhascarregadas' %}">Retornar a lista de planilhas</a></p>
+        {% if planilha %}
+            {{planilha|safe}}
+        {% else %}
+            <h6>Não foi possível importar a planilha</h6>
+        {% endif %}
+    </div>
+{% endblock %}

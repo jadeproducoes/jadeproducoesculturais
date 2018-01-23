@@ -1,0 +1,254 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    {% if pagamento %}
+        <p>Projeto: {{pagamento.id_projeto}}
+            [<a href="{% url 'pagamentos' id_projeto=pagamento.id_projeto.pk %}">Voltar para os pagamentos</a> -
+            <a href="/projeto/">Retornar aos projetos</a> ]
+        </p>
+        <p>Data do pagamento: {{pagamento.data_pagamento}}</p>
+        <a href="#MEIOSPAGAMENTOS">Formas de pagamento</a> - <a href="#MEIOSCOMPROVACAO">Formas de comprovacao</a>
+        <div class="alert alert-info">
+            <p>
+                <b>Beneficiário(a):</b>
+                {% if pagamento.id_pessoa %}
+                    {{pagamento.id_pessoa}}
+                    <i>{% if pagamento.id_pessoa.pessoa_fisica %} (Pessoa física) {% else %} (Pessoa Jurídica) {% endif %}</i>
+                {% else %}
+                    Indique um benefiário(a) para o pagamento
+                {% endif %}
+            </p>
+            <a href="{% url 'alterarbenefiario' id_pagamento=pagamento.id %}">Alterar o(a) beneficiário(a) do pagamento</a>
+
+        </div>
+        <div class="alert alert-primary">
+            {% if rubricas_pagamento.count > 0 %}
+                <h5>Rubricas do pagamento</h5>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr align="center" valign="middle">
+                      <th scope="col">Código</th>
+                      <th scope="col">Rubrica</th>
+                      <th scope="col">Limite(R$)</th>
+                      <th scope="col">Usado(R$)</th>
+                      <th scope="col">Pagar(R$)</th>
+                      <th scope="col">Saldo(R$)</th>
+                      <th scope="col">Eliminar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for rubrica in rubricas_pagamento %}
+                        {% if rubrica.saldo_rubrica >= 0 %}
+                            <tr>
+                        {% else %}
+                            <tr bgcolor="#F5DEB3">
+                        {% endif %}
+                            <td align="center">{{rubrica.id_rubrica.numero_rubrica}}</td>
+                            <td align="left">{{rubrica.id_rubrica}}</td>
+                            <td align="center">{{rubrica.id_rubrica.valor_liquido_rubrica|floatformat:2}}</td>
+                            <td align="center">{{rubrica.valor_usado_rubrica|floatformat:2}}</td>
+                            <td align="right">
+                                <a href="{% url 'editaitempagamento' id_item=rubrica.pk %}">
+                                    {{rubrica.valor_bruto_pagamento|floatformat:2}}
+                                </a>
+                            </td>
+                            <td align="center">{{rubrica.saldo_rubrica|floatformat:2}}</td>
+                            <td align="center">
+                                <a href="{% url 'eliminaitempagamento' id_item=rubrica.pk %}"><button>X</button></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td align="center" colspan="4"><b>Total</b></td>
+                        <td align="right"><b>{{pagamento.valor_bruto_pagamento}}</b></td>
+                        <td align="center"><b>---</b></td>
+                    </tr>
+                  </tbody>
+                </table>
+            {% else %}
+                Não existem <b>rubricas</b> cadastradas para este pagamento
+            {% endif %}
+            <p><a href="{% url 'listarubricasprojeto' id_pagamento=pagamento.id %}"><h5>Nova rubrica</h5></a></p>
+            <div class="alert alert-secondary">
+                <h6>Quadro resumo do pagamento</h6>
+                <table class="table table-sm">
+                    <tbody>
+                        <tr>
+                            <td>Valor bruto R$</td><td><b>{{pagamento.valor_bruto_pagamento|floatformat:2}}</b></td>
+                            <td>ISS R$</td><td><b>{{pagamento.valor_ISS|floatformat:2}}</b></td>
+                            <td>INSS R$</td><td><b>{{pagamento.valor_INSS|floatformat:2}}</b></td>
+                            <td>IR R$</td><td><b>{{pagamento.valor_IR|floatformat:2}}</b></td>
+                            <td>Descontos R$</td><td><b>{{pagamento.total_descontos|floatformat:2}}</b></td>
+                            <td bgcolor="#87CEFA" align="center">Valor líquido R$</td>
+                            <td bgcolor="#87CEFA" align="center"><b>{{pagamento.valor_liquido|floatformat:2}}</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% if pagamento.id_pessoa.pessoa_fisica and rubricas_pagamento.count > 0%}
+                    <p><b><a href="{% url 'editadescontos' id_pagamento=pagamento.id %}">Alterar descontos de impostos</a> -
+                            <a href="{% url 'cancelardescontos' id_pagamento=pagamento.id %}">Cancelar descontos</a></b></p>
+                    {% if pagamento.valor_ISS == 0 %}
+                        <div class="alert alert-danger">
+                            O(A) beficiário(a) é PESSOA FÍSICA, mas não está sendo cobrado o <b>ISS</b> sobre o pagamento
+                        </div>
+                    {% endif %}
+                    {% if pagamento.valor_INSS == 0 %}
+                        <div class="alert alert-danger">
+                            O(A) beficiário(a) é PESSOA FÍSICA, mas não está sendo cobrado o <b>INSS</b> sobre o pagamento
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- BLOCO QUE EXIBE OS MEIOS DE PAGAMENTO -->
+
+        {% if rubricas_pagamento.count > 0 %}
+            {% if valor_pagamento > 0 %}
+                <div class="alert alert-secondary">
+                    <a name="MEIOSPAGAMENTOS" id="MEIOSPAGAMENTOS"></a>
+                    <a href="#INICIO">Início da página</a>
+                    <h5>Formas de pagamento</h5>
+                    {% if formas_pagamento.count > 0 %}
+                        <table class="table table-sm">
+                          <thead>
+                            <tr align="center" valign="middle">
+                              <th scope="col">Nr</th>
+                              <th scope="col">Meio de pagamento</th>
+                              <th scope="col">Identificação</th>
+                              <th scope="col">Data de emissão</th>
+                              <th scope="col">Valor (R$)</th>
+                              <th scope="col">Data de efetivação</th>
+                              <th scope="col">Eliminar</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              {% for forma in formas_pagamento %}
+                                  <tr>
+                                      <td align="center">{{forloop.counter}}</td>
+                                      <td align="left">{{forma.meio_pagamento}}</td>
+                                      <td align="center">
+                                          <a href="{% url 'editaformapagamento' id_forma_pagamento=forma.pk %}">
+                                              {{forma.nr_documento}}
+                                          </a>
+                                      </td>
+                                      <td align="center">{{forma.data_emissao}}</td>
+                                      <td align="center">{{forma.valor|floatformat:2}}</td>
+                                      <td align="center">
+                                          {% if forma.data_efetivacao %}
+                                            {{forma.data_efetivacao}}
+                                          {% else %}
+                                            (Em aberto)
+                                          {% endif %}
+                                      </td>
+                                      <td align="center">
+                                          <a href="{% url 'eliminaformapagamento' id_forma_pagamento=forma.pk %}">
+                                              <button>X</button></a>
+                                      </td>
+                                  </tr>
+                              {% endfor %}
+                                <tr>
+                                    <td align="center" colspan="4"><b>TOTAL</b></td>
+                                    <td align="center" bgcolor="#87CEFA"><b>{{pagamento.soma_fomas_pagamento}}</b></td>
+                                </tr>
+                          </tbody>
+                        </table>
+                        {% if pagamento.valor_liquido > pagamento.soma_fomas_pagamento|add:"1" %}
+                            <div class="alert alert-danger">
+                                O total do pagamento é R$ {{pagamento.valor_liquido|floatformat:2}} e você só apresentou formas de
+                                pagamento para R$ {{pagamento.soma_fomas_pagamento|floatformat:2}}. Inclua nova forma de pagamento ou
+                                altere alguma forma existente!
+                            </div>
+                        {% endif %}
+                        {% if pagamento.valor_liquido < pagamento.soma_fomas_pagamento %}
+                            <div class="alert alert-danger">
+                                O total das formas de pagamento é de <b>R$ {{pagamento.soma_fomas_pagamento|floatformat:2}}</b>, superior
+                                ao total líquido do pagamento que é de <b>R$ {{pagamento.valor_liquido|floatformat:2}}</b>.
+                                Ajuste algum(s) do(s) item(s)!
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        Não existem <b>formas de pagamento</b> para este pagamento
+                    {% endif %}
+                    <p><a href="{% url 'novaformapagamento' id_pagamento=pagamento.id %}"><h6>Nova forma de pagamento</h6></a></p>
+                </div>
+
+                <!-- BLOCO QUE EXIBE OS MEIOS DE COMPROVACAO -->
+
+                <div class="alert alert-secondary">
+                    <a name="MEIOSCOMPROVACAO" id="MEIOSCOMPROVACAO"></a>
+                    <a href="#INICIO">Início da página</a>
+                    <h5>Formas de comprovação</h5>
+                    {% if formas_comprovavao.count > 0 %}
+                        <table class="table table-sm">
+                          <thead>
+                            <tr align="center" valign="middle">
+                              <th scope="col">Nr</th>
+                              <th scope="col">Tipo comprovação</th>
+                              <th scope="col">Identificação</th>
+                              <th scope="col">Data de emissão</th>
+                              <th scope="col">Valor (R$)</th>
+                              <th scope="col">Data de efetivação</th>
+                              <th scope="col">Eliminar</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              {% for forma in formas_comprovavao %}
+                                  <tr>
+                                      <td align="center">{{forloop.counter}}</td>
+                                      <td align="left">{{forma.meio_comprovacao}}</td>
+                                      <td align="center">
+                                          <a href="{% url 'editaformacomprovacao' id_forma_comprovacao=forma.pk %}">
+                                              {{forma.nr_doc_comprovacao}}
+                                          </a>
+                                      </td>
+                                      <td align="center">{{forma.data_emissao}}</td>
+                                      <td align="center">{{forma.valor|floatformat:2}}</td>
+                                      <td align="center">
+                                          {% if forma.data_recebimento %}
+                                            {{forma.data_recebimento}}
+                                          {% else %}
+                                            (Em aberto)
+                                          {% endif %}
+                                      </td>
+                                      <td align="center">
+                                          <a href="{% url 'eliminaformacomprovacao' id_forma_comprovacao=forma.pk %}">
+                                              <button>X</button></a>
+                                      </td>
+                                  </tr>
+                              {% endfor %}
+                                <tr>
+                                    <td align="center" colspan="4"><b>TOTAL</b></td>
+                                    <td align="center" bgcolor="#87CEFA"><b>{{pagamento.soma_fomas_pagamento}}</b></td>
+                                </tr>
+                          </tbody>
+                        </table>
+                        {% if pagamento.valor_liquido > pagamento.soma_formas_comprovacao|add:"1" %}
+                            <div class="alert alert-danger">
+                                O total das formas de comprovação é R$ {{pagamento.valor_liquido|floatformat:2}} e
+                                você só apresentou formas de comprovação para R$ {{pagamento.soma_formas_comprovacao|floatformat:2}}.
+                                Inclua nova forma de comprovação ou altere alguma forma existente!
+                            </div>
+                        {% endif %}
+                        {% if pagamento.valor_liquido < pagamento.soma_formas_comprovacao %}
+                            <div class="alert alert-danger">
+                                O total das formas de comprovação é de <b>R$ {{pagamento.soma_formas_comprovacao|floatformat:2}}</b>, superior
+                                ao total líquido do pagamento que é de <b>R$ {{pagamento.valor_liquido|floatformat:2}}</b>.
+                                Ajuste algum(s) do(s) item(s)!
+                            </div>
+                        {% endif %}
+
+                    {% else %}
+                        Não existem <b>formas de comprovação</b> para este pagamento
+                    {% endif %}
+                    <p><a href="{% url 'novaformacomprovacao' id_pagamento=pagamento.id %}"><h6>Nova forma comprovação</h6></a></p>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <div class="alert alert-danger">
+            Não foi informado nenhum pagamento
+        </div>
+    {% endif %}
+{% endblock %}

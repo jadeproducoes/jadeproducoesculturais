@@ -1,32 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Orçamento</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-</head>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th scope="col">Nr</th>
-          <th scope="col">Rubrica</th>
-          <th scope="col">Descrição</th>
-          <th scope="col">Valor Solicitado</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for rubrica in lista_rubricas.all %}
-            <tr>
-              <td>{{rubrica.numero_rubrica}}</th>
-              <td>{{rubrica.identificacao_rubrica}}</th>
-              <td>{{rubrica.descricao_rubrica}}</td>
-              <td>{{rubrica.valor_solicitado}}</td>
-            </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-<body>
+{% extends 'jadebase.html' %}
 
-</body>
-</html>
+{% block conteudo %}
+    {% if lista_projetos %}
+        <p>Orçamento para que projeto?</p>
+        {% for projeto in lista_projetos %}
+            <div>
+                <a href="{% url 'listaorcamentos' id=projeto.id %}">{{ projeto.nome_projeto }}</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Não existem projetos cadastrados</p>
+        <a href="vai">Cadastrar projeto</a>
+    {% endif %}
+{% endblock %}

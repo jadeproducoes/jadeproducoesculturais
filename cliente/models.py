@@ -1,11 +1,12 @@
 from django.db import models
-from utils.models import *
+from utils.models import Pessoa, AreaCultural
 
 # Create your models here.
 
 # Especializa a classe Pessoa como Cliente
 
 class Cliente(Pessoa):
+    nome_artistico = models.CharField("Nome artístico/Fantasia", max_length=50, null=True, blank=True)
     area_cultural = models.ForeignKey(AreaCultural, on_delete=None, blank=True, null=True)
     ceac = models.CharField("número do CEAC", max_length=4, null=True, blank=True)
     curriculo = models.URLField("link para o currículo", null=True, blank=True)

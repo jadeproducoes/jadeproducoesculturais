@@ -1,1 +1,1 @@
-"manage.py runserver" 
+..\myvenv\Scripts\activate

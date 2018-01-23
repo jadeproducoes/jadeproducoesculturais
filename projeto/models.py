@@ -1,7 +1,9 @@
 from django.db import models
 from utils.models import *
+from utils.utilitarios import *
 from cliente.models import Cliente
 from django.utils import timezone
+#from orcamento.models import Orcamento
 
 # Create your models here.
 
@@ -46,13 +48,13 @@ class Projeto(models.Model):
         ('AP','Aprovado'),
         ('AG','Aguardando liberação de recursos'),
         ('PN','Pago, mas não iniciado'),
-        ('PE','Em execução'),
+        ('EX','Em execução'),
         ('PR','Pré-produção'),
-        ('PD','Produção'),
+        ('PO','Produção'),
         ('PS','Pós-produção'),
         ('EP','Elaborando presteação de contas'),
-        ('PC','Prestação de contas entregue'),
-        ('AP','Análise prestação de contas'),
+        ('PE','Prestação de contas entregue'),
+        ('AC','Análise prestação de contas'),
         ('PD','Pendência prestação de contas'),
         ('CL', 'Concluído')
     )
@@ -61,7 +63,7 @@ class Projeto(models.Model):
     resumo = models.TextField("Resumo do projeto", null=True, blank=True)
     inicio_desenvolvimento = models.DateField("Data de início do desenvolvimento", null=False, blank=False, default=timezone.now)
     observacao_projeto = models.TextField("Observação", null=True, blank=True)
-    arquivar = models.BooleanField("Arquivar projeto?", default=False)
+    arquivar = models.BooleanField("Arquivar?", default=False)
 
     def __str__(self):
         return self.nome_projeto
@@ -70,3 +72,41 @@ class Projeto(models.Model):
         ordering = ["-inicio_desenvolvimento"]
         verbose_name_plural = "Projetos"
         verbose_name = "Projeto"
+
+
+class Meta(models.Model):
+    descricao_meta = models.TextField("Meta", null=False, blank=False)
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, null=False, blank=False)
+
+    def __str__(self):
+        return reticencias(self.descricao_meta, 50)
+
+    class Meta:
+        verbose_name_plural = "Metas"
+        verbose_name = "Meta"
+
+
+class Tarefa(models.Model):
+
+    PRIORIDADE = ((0,'Alta'), (1,'Média'), (2,'Baixa'))
+    STATUS = ((0,'Nenhuma ação realizada'), (1,'Em andamento'), (2,'Concluida'))
+
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, null=False, blank=False)
+    desricao_tarefa = models.TextField("Descrição da tarefa", null=False, blank=False)
+    responsavel = models.ForeignKey(Pessoa, null=True, blank=True)
+    envolvidos = models.TextField("Envolvidos", null=False, blank=False)
+    prioridade = models.PositiveIntegerField("Prioridade", choices=PRIORIDADE, default=2, null=False, blank=False)
+    meta = models.ForeignKey(Meta, on_delete=None, blank=True, null=True, verbose_name='Meta associada')
+    status = models.PositiveIntegerField("Status", null=False, blank=False, default=0, choices=STATUS)
+    data_criacao = models.DateField("Data da criação da tarefa", default=timezone.now, blank=False, null=False)
+    data_limite_realizacao = models.DateField("Data limite", blank=True, null=True)
+    data_conclusao = models.DateField("Data da conclusão", blank=True, null=True)
+
+    def __str__(self):
+        return reticencias(self.desricao_tarefa, 50)
+
+    class Meta:
+        ordering = ["data_criacao"]
+        verbose_name_plural = "Tarefas"
+        verbose_name = "Tarefa"
+

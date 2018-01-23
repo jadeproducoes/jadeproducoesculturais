@@ -1,0 +1,57 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    <p>Projeto: {{projeto}}</p>
+
+    {% if rubricas_orcamento %}
+        <form action="{% url 'atualizarubricas' id_pagamento=pagamento.id%}" method="post">
+            {% csrf_token %}
+            <table class="table table-bordered">
+              <thead>
+                <tr align="center" valign="middle">
+                  <th scope="col" colspan="2">Selecione</th>
+                  <th scope="col">Nr</th>
+                  <th scope="col">Rubrica</th>
+                  <th scope="col">Descrição</th>
+                  <th scope="col">Valor Solicitado</th>
+                  <th scope="col">Valor da glosa</th>
+                  <th scope="col">Quantidade</th>
+                  <th scope="col">Total do item</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for rubrica in rubricas_orcamento %}
+                    <tr>
+                      <td align="center">
+                          {% if rubrica.id in rubricas_pagamento %}
+                                <input type="checkbox" name="id_rubrica" id="id_rubrica" value="{{rubrica.id}}" checked="checked">
+                          {% else %}
+                                <input type="checkbox" name="id_rubrica" id="id_rubrica" value="{{rubrica.id}}">
+                          {% endif %}
+                      </td>
+                      <td><button type="submit" class="btn btn-primary">Selecionar</button> </td>
+                      <td align="center">{{rubrica.numero_rubrica}}</td>
+                      <td align="left">{{rubrica.identificacao_rubrica}}</td>
+                      <td align="left">{{rubrica.descricao_rubrica}}</td>
+                      <td align="center">{{rubrica.valor_solicitado}}</td>
+                      <td align="center">{{rubrica.valor_da_glosa}}</td>
+                      <td align="center">{{rubrica.quantidade}}</td>
+                      <td align="center">{{rubrica.valor_liquido_rubrica|floatformat:2}}</td>
+                    </tr>
+                {% endfor %}
+                    <tr align="center">
+                        <td colspan="5">TOTAL</td>
+                        <td>{{ total_bruto|floatformat:2 }}</td>
+                        <td>{{ total_glosas|floatformat:2 }}</td>
+                        <td>-</td>
+                        <td>{{ total_liquido|floatformat:2 }}</td>
+                    </tr>
+              </tbody>
+            </table>
+        </form>
+    {% else %}
+        {{mensagem}}
+    {% endif %}
+
+{% endblock %}
