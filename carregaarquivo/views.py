@@ -1,7 +1,9 @@
 from .forms import FormUploadArquivo
 from django.core.files.storage import FileSystemStorage
+from django.db import models
 from utils.utilitarios import *
 from openpyxl import load_workbook
+from .models import Arquivo
 import xlrd
 
 class Carregaarquivo():
@@ -33,8 +35,27 @@ class Carregaarquivo():
 
 
 class FiltroImportacao():
-    nome_arquivo = ""
-    tipo_arquivo = ""
+    arquivo_importado = None
+    modelo_alvo = None
+    dicionario_modelo = []
+    def set_modelo(self, modelo):
+        if isinstance(modelo, models.Model):
+            dicionario = modelo.__dict__
+            if dicionario:
+                self.modelo_alvo = modelo
+                del dicionario['_state']
+                del dicionario['id']
+                self.dicionario_modelo = dicionario.keys()
+            else:
+                raise AttributeError("O modelo inserido não possui um dicionário (__dict__)")
+        else:
+            raise TypeError("A classe não é um modelo Django")
+
+    def get_dicionario(self):
+        if not self.dicionario_modelo:
+            raise AttributeError("Não há dicionário disponível")
+        return self.dicionario_modelo
+
 
 class ImportaPlanilha(FiltroImportacao):
 
@@ -44,16 +65,20 @@ class ImportaPlanilha(FiltroImportacao):
     coluna_final = 'A'
 
     __idx_linha_inicial = 0
-    __idx_linha_final = 0
+    __idx_linha_final = 1
     __idx_coluna_inicial = 0
-    __idx_coluna_final = 0
+    __idx_coluna_final = 1
 
     para_se_linha_vazia = True
 
-    def importa_planilha(self, nome):
+    desconsidera_linhas = ""
+    desconsidera_colunas = ""
+
+    def importa_planilha(self, arquivo):
         ca = Carregaarquivo()
         ws = False
         lista_planilha = []
+        nome = arquivo.arquivo_carga.name
         if ca.arquivo_midia_existe(nome):
 
             # Verifica se os dados foram inseridos indevidamente
@@ -80,10 +105,6 @@ class ImportaPlanilha(FiltroImportacao):
                 self.__idx_linha_final = self.linha_final
                 self.__idx_coluna_inicial = self.converte_coluna_em_indice(self.coluna_inicial)
                 self.__idx_coluna_final = self.converte_coluna_em_indice(self.coluna_final)
-                print("Nome: {}\nLI, LF, CI e CF: {} - {} - {} - {}".format(nome,self.__idx_linha_inicial,
-                                                                            self.__idx_linha_final,
-                                                                            self.__idx_coluna_inicial,
-                                                                            self.__idx_coluna_final))
                 wb = xlrd.open_workbook(ca.caminho_completo_arquivo(nome))
                 ws = wb.sheet_by_index(0)
                 for nr_linha in range(self.__idx_linha_inicial, self.__idx_linha_final):
@@ -119,3 +140,8 @@ class ImportaPlanilha(FiltroImportacao):
         return indice
 
 
+    def regiao_importacao(self, regiao):
+        if ":" in regiao:
+            celulas_regiao = regiao.split(":")
+            celula_inicial = celulas_regiao[0]
+            celula_final = celulas_regiao[1]

@@ -79,6 +79,30 @@ def extensao_arquivo(nome_arquivo):
         extensao = nome_quebrado[len(nome_quebrado)-1]
     return extensao
 
+def enumera_linhas_lista(lista=[], saltos=[], linha_inicial=1):
+    '''
+    Enumera as linhas de uma lista.
+
+    Faz a numeracao das linhas de uma lista admitindos saltos nas nuemracoes
+    :param lista: lista que deve ser numerada
+    :param saltos: indica os saltos na numeracao
+    :return: lista nuerada
+    '''
+
+    if isinstance(lista, list):
+        for i, linha in enumerate(lista):
+            if linha_inicial in saltos:
+                linha_inicial += 1
+            if isinstance(linha, str):  # nao tem como diferenciar lista de str? tem que fazer o teste antes?
+                lista[i] = [linha_inicial, linha]
+            elif isinstance(linha, list):
+                lista[i] = [linha_inicial] + linha
+            else:
+                lista[i] = [linha_inicial, linha]
+            linha_inicial += 1
+
+    return lista
+
 class TabelaHTML():
 
     linha_inicial = 0
@@ -86,10 +110,11 @@ class TabelaHTML():
     coluna_inicial = 0
     coluna_final = 0
     considera_limites = False
-    cabecalho_primeira_linha = True
+    cabecalho_primeira_linha = False
     class_padrao = ""
-    enumera = True
+    numera_linhas = True
     cabecalho = []
+    cabecalho_tipo_planilha = True
 
     def gerar_tabela(self, lista):
 
@@ -111,26 +136,42 @@ class TabelaHTML():
             self.cabecalho = lista[0]
             lista = lista[1:]
 
+        #if self.indica_colunas:
+        #    nr_max_colunas =
+        #    colunas_padrao =
+        #    for coluna in colunas_padrao:
+        #        celulas_cabecalho += self.formata_celula_cabecalho(coluna)
+        #    if self.numera_linhas:
+        #        celulas_cabecalho = self.formata_celula_cabecalho("Nr/Col") + celulas_cabecalho
+        #    celulas_cabecalho = "<tr align='center'>{}</tr>".format(celulas_cabecalho)
+
+
+        if self.cabecalho_tipo_planilha:
+            self.cabecalho = [chr(indice) for indice in range(65, (65 + len(lista[0])))]
+
         if self.cabecalho:
             for coluna in self.cabecalho:
                 celulas_cabecalho += self.formata_celula_cabecalho(coluna)
-            if self.enumera:
+            if self.numera_linhas:
                 celulas_cabecalho = self.formata_celula_cabecalho("Nr") + celulas_cabecalho
             celulas_cabecalho = "<tr>{}</tr>".format(celulas_cabecalho)
 
         for i, linha in enumerate(lista):
             celulas_linha = ""
             for j, coluna in enumerate(linha):
-                if j == 0 and self.enumera:
-                    celulas_linha = self.formata_celula_linha(i+1)
+                if j == 0 and self.numera_linhas:
+                    celulas_linha = self.formata_celula_linha(i+1, True)
                 celulas_linha += self.formata_celula_linha(coluna)
             celulas_corpo += "<tr>{}</tr>".format(celulas_linha)
         return "<table class='{}'><thead>{}</thead><tbody>{}</tbody></table>".format(self.class_padrao,
                                                                                      celulas_cabecalho,celulas_corpo)
 
-    def formata_celula_cabecalho(self, valor):
-        return "<th>{}</th>".format(valor)
+    def formata_celula_cabecalho(self, valor, negrito=False):
+        celula = "<th><b>{}<b></th>" if negrito else "<th>{}</th>"
+        return celula.format(valor)
 
-    def formata_celula_linha(self, valor):
-        return "<td>{}</td>".format(valor)
+    def formata_celula_linha(self, valor, negrito=False):
+        celula = "<td><b>{}</b></td>" if negrito else "<td>{}</td>"
+        return celula.format(valor)
+
 

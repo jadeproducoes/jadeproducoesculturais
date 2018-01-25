@@ -1,6 +1,5 @@
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect, get_object_or_404
-from carregaarquivo.views import Carregaarquivo
 from projeto.models import Projeto
 from django import forms
 from .models import *
@@ -10,7 +9,8 @@ from pagamento.models import Pagamento, ItemPagamento
 from utils.utilitarios import *
 from openpyxl import load_workbook
 from carregaarquivo.models import Arquivo, TipoArquivo, FuncaoArquivo
-from carregaarquivo.views import Carregaarquivo, ImportaPlanilha
+from carregaarquivo.views import Carregaarquivo, ImportaPlanilha, FiltroImportacao
+from carregaarquivo.forms import FormExibePlanilha
 import xlrd
 
 
@@ -330,24 +330,44 @@ def exibir_planilha(request, id_arquivo):
     :param id_arquivo: PK proveniente da tabela de dados dos arquivos carregados na pasta MEDIA
     :return: uma STR contendo a tabela a ser renderizada no template
     '''
-    nome = ""
     planilha = ""
     arquivo = Arquivo.objects.get(pk=id_arquivo)
+
     if arquivo:
-        nome = arquivo.arquivo_carga.name
+
+        linha_inicial = 1
+        linha_final = 20
+        coluna_inicial = 'A'
+        coluna_final = 'J'
+
+        if request.method == 'POST':
+            formulario = FormExibePlanilha(request.POST)
+            if formulario.is_valid():
+                linha_inicial = int(formulario.cleaned_data['linha_inicial'])
+                linha_final = int(formulario.cleaned_data['linha_final'])
+                coluna_inicial = formulario.cleaned_data['coluna_inicial']
+                coluna_final = formulario.cleaned_data['coluna_final']
+        else:
+            dados = {'linha_inicial': linha_inicial,
+                     'linha_final': linha_final,
+                     'coluna_inicial': coluna_inicial,
+                     'coluna_final': coluna_final}
+            formulario = FormExibePlanilha(dados)
+
         ipp = ImportaPlanilha()
-        ipp.linha_inicial = 11
-        ipp.linha_final = 23
-        ipp.coluna_final = 'L'
-        tb = TabelaHTML()
-        tb.enumera = False
-        tb.cabecalho_primeira_linha = False
-        tb.cabecalho = ['Nr','Descrição','Código','Justificativa','Provimento','Tipo Despesas','Unidade',
-                        'Quantidade', 'Valor Unitário','Total']
-        tb.class_padrao = 'table table-bordered'
-        planilha_importada = ipp.importa_planilha(nome)
-        print(planilha_importada)
+        ipp.linha_inicial = linha_inicial
+        ipp.linha_final = linha_final
+        ipp.coluna_final = coluna_inicial
+        ipp.coluna_final = coluna_final
+        planilha_importada = ipp.importa_planilha(arquivo)
+
+        print("*** Lista numerada: {}".format(enumera_linhas_lista(planilha_importada)))
+
         if planilha_importada:
+
+            tb = TabelaHTML()
+            tb.class_padrao = 'table table-bordered'
             planilha = tb.gerar_tabela(planilha_importada)
-    return render(request, 'orcamento/exibe_planilha.html', {'planilha':planilha, 'nome_arquivo':nome})
+
+    return render(request, 'orcamento/exibe_planilha.html', {'planilha':planilha, 'arquivo':arquivo, 'formulario':formulario})
 

@@ -13,7 +13,7 @@
                     <td align="center" bgcolor="#F0FFFF">Total das glosas (R$): {{ orcamento_base.valor_glosas|floatformat:2 }}</td>
                     <td align="center" bgcolor="#F0FFFF">Valor líquido recebido (R$): {{ orcamento_base.valor_liquido|floatformat:2 }}</td>
                     <td align="center" bgcolor="#ffe6e6">
-                        <a href="{% url 'controle_excel' id_projeto=orcamento_base.projeto_associado.id %}">Salvar em Excel</a>
+                        <a href="{% url 'download_controle_excel' id_projeto=orcamento_base.projeto_associado.id %}">Salvar em Excel</a>
                     </td>
                 </tr>
             </tbody>
