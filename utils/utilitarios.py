@@ -103,6 +103,45 @@ def enumera_linhas_lista(lista=[], saltos=[], linha_inicial=1):
 
     return lista
 
+class SequenciaLetras():
+    __a_maiusculo = 'A'
+    __z_maiusculo = 'Z'
+    __a_minusculo = 'a'
+    __z_minusculo = 'z'
+
+    def a_z_maiusculo(self):
+        return [chr(x) for x in range(ord(self.__a_maiusculo), ord(self.__z_maiusculo)+1)]
+
+    def a_z_minusculo(self):
+        return [chr(x) for x in range(ord(self.__a_minusculo), ord(self.__z_minusculo)+1)]
+
+    def intervalo_letras(self, letra_inicial='A', letra_final='Z', maiscula=True):
+        intervalo = []
+        if isinstance(letra_inicial, str) and isinstance(letra_final, str):
+            letra_inicial = letra_inicial.upper() if maiscula else letra_inicial.lower()
+            letra_final = letra_final.upper() if maiscula else letra_final.lower()
+            intervalo = [chr(x) for x in range(ord(letra_inicial), ord(letra_final) + 1)]
+        return intervalo
+
+    def intervalo_com_excecoes(self, letra_inicial='A', letra_final='Z', maiscula=True, lista_excecoes=[]):
+        intervalo = self.intervalo_letras(letra_inicial, letra_final, maiscula)
+        if intervalo and lista_excecoes:
+            lista_intervalos = []
+            for excecao in lista_excecoes:
+                if isinstance(excecao, str):
+                    if "-" in excecao:
+                        inicio_excecao = excecao.split("-")[0] if len(excecao.split("-")[0]) == 1 else excecao.split("-")[0][0]
+                        fim_excecao = excecao.split("-")[1] if len(excecao.split("-")[1]) == 1 else excecao.split("-")[1][0]
+                        inicio_excecao = inicio_excecao.upper() if maiscula else inicio_excecao.lower()
+                        fim_excecao = fim_excecao.upper() if maiscula else fim_excecao.lower()
+                        lista_intervalos += self.intervalo_letras(inicio_excecao, fim_excecao, maiscula)
+                    else:
+                        lista_intervalos += [excecao[0].upper() if maiscula else excecao[0].lower()]
+            if lista_intervalos:
+                for del_letra in lista_intervalos:
+                    intervalo.remove(del_letra)
+        return intervalo
+
 class TabelaHTML():
 
     linha_inicial = 0

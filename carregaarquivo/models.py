@@ -33,8 +33,8 @@ class Arquivo(models.Model):
 
     descricao = models.TextField("Descreva o arquivo", blank=False)
     arquivo_carga = models.FileField("Carregar arquivo")
-    tipo_arquivo = models.ForeignKey(TipoArquivo, verbose_name="Tipo de arquivo", null=True)
-    funcao_arquivo = models.ForeignKey(FuncaoArquivo, verbose_name="Função", null=True)
+    tipo_arquivo = models.ForeignKey(TipoArquivo, verbose_name="Tipo de arquivo", null=True, on_delete=models.SET_NULL)
+    funcao_arquivo = models.ForeignKey(FuncaoArquivo, verbose_name="Função", null=True, on_delete=models.SET_NULL)
     data_uploaded = models.DateTimeField(auto_now_add=True)
 
     class Meta:

@@ -93,7 +93,7 @@ class Tarefa(models.Model):
 
     projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, null=False, blank=False)
     desricao_tarefa = models.TextField("Descrição da tarefa", null=False, blank=False)
-    responsavel = models.ForeignKey(Pessoa, null=True, blank=True)
+    responsavel = models.ForeignKey(Pessoa, null=True, blank=True, on_delete=models.SET_NULL)
     envolvidos = models.TextField("Envolvidos", null=False, blank=False)
     prioridade = models.PositiveIntegerField("Prioridade", choices=PRIORIDADE, default=2, null=False, blank=False)
     meta = models.ForeignKey(Meta, on_delete=None, blank=True, null=True, verbose_name='Meta associada')
