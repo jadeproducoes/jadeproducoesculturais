@@ -9,7 +9,7 @@ from pagamento.models import Pagamento, ItemPagamento
 from utils.utilitarios import *
 from openpyxl import load_workbook
 from carregaarquivo.models import Arquivo, TipoArquivo, FuncaoArquivo
-from carregaarquivo.views import Carregaarquivo, ImportaPlanilha, FiltroImportacao
+from carregaarquivo.views import Carregaarquivo, ImportaPlanilha
 from carregaarquivo.forms import FormExibePlanilha
 import xlrd
 
@@ -335,31 +335,24 @@ def exibir_planilha(request, id_arquivo):
 
     if arquivo:
 
-        linha_inicial = 1
-        linha_final = 20
-        coluna_inicial = 'A'
-        coluna_final = 'J'
+        planilha_importada = False
+        ipp = ImportaPlanilha()
 
         if request.method == 'POST':
             formulario = FormExibePlanilha(request.POST)
             if formulario.is_valid():
-                linha_inicial = int(formulario.cleaned_data['linha_inicial'])
-                linha_final = int(formulario.cleaned_data['linha_final'])
-                coluna_inicial = formulario.cleaned_data['coluna_inicial']
-                coluna_final = formulario.cleaned_data['coluna_final']
+                ipp.usar_filtro_arquivo = False
+                ipp.linha_inicial = arquivo.filtro.linha_inicial
+                ipp.coluna_inicial = arquivo.filtro.coluna_inicial
+                ipp.coluna_final = arquivo.filtro.coluna_final
+                ipp.linha_final = int(formulario.cleaned_data['linha_final'])
+                planilha_importada = ipp.importa_planilha(arquivo)
+                if formulario.cleaned_data['acao'] == 'Importar':
+                    print("*****Agora vou importar com a porra toda*****")
         else:
-            dados = {'linha_inicial': linha_inicial,
-                     'linha_final': linha_final,
-                     'coluna_inicial': coluna_inicial,
-                     'coluna_final': coluna_final}
-            formulario = FormExibePlanilha(dados)
-
-        ipp = ImportaPlanilha()
-        ipp.linha_inicial = linha_inicial
-        ipp.linha_final = linha_final
-        ipp.coluna_final = coluna_inicial
-        ipp.coluna_final = coluna_final
-        planilha_importada = ipp.importa_planilha(arquivo)
+            ipp.usar_filtro_arquivo = True
+            formulario = FormExibePlanilha({'linha_final': arquivo.filtro.linha_final})
+            planilha_importada = ipp.importa_planilha(arquivo)
 
         tb = TabelaHTML()
         tb.class_padrao = 'table table-bordered'

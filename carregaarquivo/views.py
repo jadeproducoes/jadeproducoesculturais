@@ -47,6 +47,7 @@ class ImportaPlanilha():
     __idx_coluna_final = 1
 
     para_se_linha_vazia = False
+    usar_filtro_arquivo = True
 
     desconsidera_linhas = ""
     desconsidera_colunas = ""
@@ -61,6 +62,12 @@ class ImportaPlanilha():
         lista_planilha = []
         nome = arquivo.arquivo_carga.name
         if ca.arquivo_midia_existe(nome):
+
+            if arquivo.filtro and self.usar_filtro_arquivo:
+                self.linha_inicial = arquivo.filtro.linha_inicial
+                self.linha_final = arquivo.filtro.linha_final
+                self.coluna_inicial = arquivo.filtro.coluna_inicial
+                self.coluna_final = arquivo.filtro.coluna_final
 
             # Verifica se os dados foram inseridos indevidamente
             if (self.linha_inicial <= 0) or (self.linha_final <= 0):
