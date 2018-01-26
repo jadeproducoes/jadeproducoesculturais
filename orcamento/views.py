@@ -361,13 +361,14 @@ def exibir_planilha(request, id_arquivo):
         ipp.coluna_final = coluna_final
         planilha_importada = ipp.importa_planilha(arquivo)
 
-        print("*** Lista numerada: {}".format(enumera_linhas_lista(planilha_importada)))
-
+        tb = TabelaHTML()
+        tb.class_padrao = 'table table-bordered'
         if planilha_importada:
-
-            tb = TabelaHTML()
-            tb.class_padrao = 'table table-bordered'
+            tb.numera_linhas = True
             planilha = tb.gerar_tabela(planilha_importada)
+        else:
+            tb.numera_linhas = False
+            planilha = 'Não foi possível importar a planilha. Verifique se o filtro está ajustado ou se o arquivo está presente'
 
     return render(request, 'orcamento/exibe_planilha.html', {'planilha':planilha, 'arquivo':arquivo, 'formulario':formulario})
 

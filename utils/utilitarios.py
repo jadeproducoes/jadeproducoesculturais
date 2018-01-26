@@ -170,20 +170,9 @@ class TabelaHTML():
                 for i, linha in enumerate(lista):
                     lista[i] = linha[self.coluna_inicial:self.coluna_final]
 
-
         if (not self.cabecalho) and self.cabecalho_primeira_linha:
             self.cabecalho = lista[0]
             lista = lista[1:]
-
-        #if self.indica_colunas:
-        #    nr_max_colunas =
-        #    colunas_padrao =
-        #    for coluna in colunas_padrao:
-        #        celulas_cabecalho += self.formata_celula_cabecalho(coluna)
-        #    if self.numera_linhas:
-        #        celulas_cabecalho = self.formata_celula_cabecalho("Nr/Col") + celulas_cabecalho
-        #    celulas_cabecalho = "<tr align='center'>{}</tr>".format(celulas_cabecalho)
-
 
         if self.cabecalho_tipo_planilha:
             self.cabecalho = [chr(indice) for indice in range(65, (65 + len(lista[0])))]

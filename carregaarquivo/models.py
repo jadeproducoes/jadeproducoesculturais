@@ -45,3 +45,26 @@ class Arquivo(models.Model):
     def __str__(self):
         return self.arquivo_carga.name
 
+
+class FiltroImportacao(models.Model):
+    nome_filtro = models.CharField("Nome do filtro", max_length=40, blank=False)
+    descricao_filtro = models.TextField("Descrição da função do filtro", blank=True)
+    aplicado_arquivos = models.ForeignKey(TipoArquivo, verbose_name="Se aplica a que tipo de arquivo?")
+
+    class Meta:
+        ordering = ["-data_uploaded"]
+        verbose_name = "Arquivo"
+        verbose_name_plural = "Arquivos"
+        abstract = True
+
+
+
+class FiltroImportacaoPlanilha(models.Model):
+
+    modelo_alvo = models.CharField("Modelo alvo, destino da planilha", max_length=50, blank=False)
+    linha_inicial = models.PositiveIntegerField("Linha inicial", default=0)
+    linha_final = models.PositiveIntegerField("Linha inicial", default=20)
+    coluna_inicial = models.CharField("Coluna inicial", max_length=3, default='A')
+    coluna_final = models.CharField("Coluna final", max_length=3, default='L')
+    excecao_linhas = models.CharField("Linhas que não devem ser processadas", max_length=50, blank=True)
+    excecao_colunas = models.CharField("Colunas que não devem ser processadas", max_length=50, blank=True)

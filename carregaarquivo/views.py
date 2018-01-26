@@ -34,30 +34,7 @@ class Carregaarquivo():
         return True if fs.exists(self.caminho_completo_arquivo(nome)) else False
 
 
-class FiltroImportacao():
-    arquivo_importado = None
-    modelo_alvo = None
-    dicionario_modelo = []
-    def set_modelo(self, modelo):
-        if isinstance(modelo, models.Model):
-            dicionario = modelo.__dict__
-            if dicionario:
-                self.modelo_alvo = modelo
-                del dicionario['_state']
-                del dicionario['id']
-                self.dicionario_modelo = dicionario.keys()
-            else:
-                raise AttributeError("O modelo inserido não possui um dicionário (__dict__)")
-        else:
-            raise TypeError("A classe não é um modelo Django")
-
-    def get_dicionario(self):
-        if not self.dicionario_modelo:
-            raise AttributeError("Não há dicionário disponível")
-        return self.dicionario_modelo
-
-
-class ImportaPlanilha(FiltroImportacao):
+class ImportaPlanilha():
 
     linha_inicial = 1
     linha_final = 1
@@ -69,12 +46,16 @@ class ImportaPlanilha(FiltroImportacao):
     __idx_coluna_inicial = 0
     __idx_coluna_final = 1
 
-    para_se_linha_vazia = True
+    para_se_linha_vazia = False
 
     desconsidera_linhas = ""
     desconsidera_colunas = ""
 
     def importa_planilha(self, arquivo):
+
+        self.coluna_inicial = self.coluna_inicial.upper()
+        self.coluna_final = self.coluna_final.upper()
+
         ca = Carregaarquivo()
         ws = False
         lista_planilha = []
