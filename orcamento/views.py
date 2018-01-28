@@ -337,27 +337,30 @@ def exibir_planilha(request, id_arquivo):
 
         planilha_importada = False
         ipp = ImportaPlanilha()
+        if arquivo.filtro:
+            ipp.ativa_filtro(arquivo.filtro)
 
         if request.method == 'POST':
             formulario = FormExibePlanilha(request.POST)
             if formulario.is_valid():
-                ipp.usar_filtro_arquivo = False
-                ipp.linha_inicial = arquivo.filtro.linha_inicial
-                ipp.coluna_inicial = arquivo.filtro.coluna_inicial
-                ipp.coluna_final = arquivo.filtro.coluna_final
-                ipp.linha_final = int(formulario.cleaned_data['linha_final'])
-                planilha_importada = ipp.importa_planilha(arquivo)
+                ipp.set_linha_final(int(formulario.cleaned_data['linha_final']))
+                ipp.set_desconsidera_linhas(formulario.cleaned_data['desconsiderar_linhas'])
                 if formulario.cleaned_data['acao'] == 'Importar':
                     print("*****Agora vou importar com a porra toda*****")
         else:
-            ipp.usar_filtro_arquivo = True
-            formulario = FormExibePlanilha({'linha_final': arquivo.filtro.linha_final})
-            planilha_importada = ipp.importa_planilha(arquivo)
+            if arquivo.filtro:
+                formulario = FormExibePlanilha({'linha_final':arquivo.filtro.linha_final,
+                                                'desconsiderar_linhas':arquivo.filtro.excecao_linhas})
+            else:
+                formulario = FormExibePlanilha()
+
+        planilha_importada = ipp.importa_planilha(arquivo)
 
         tb = TabelaHTML()
         tb.class_padrao = 'table table-bordered'
         if planilha_importada:
             tb.numera_linhas = True
+            tb.inicio_contagem = ipp.get_linha_inicial()
             planilha = tb.gerar_tabela(planilha_importada)
         else:
             tb.numera_linhas = False

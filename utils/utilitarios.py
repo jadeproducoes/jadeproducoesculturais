@@ -103,44 +103,39 @@ def enumera_linhas_lista(lista=[], saltos=[], linha_inicial=1):
 
     return lista
 
-class SequenciaLetras():
-    __a_maiusculo = 'A'
-    __z_maiusculo = 'Z'
-    __a_minusculo = 'a'
-    __z_minusculo = 'z'
 
-    def a_z_maiusculo(self):
-        return [chr(x) for x in range(ord(self.__a_maiusculo), ord(self.__z_maiusculo)+1)]
+def a_z_maiusculo():
+    return [chr(x) for x in range(ord("A"), ord("Z")+1)]
 
-    def a_z_minusculo(self):
-        return [chr(x) for x in range(ord(self.__a_minusculo), ord(self.__z_minusculo)+1)]
+def a_z_minusculo():
+    return [chr(x) for x in range(ord("a"), ord("z")+1)]
 
-    def intervalo_letras(self, letra_inicial='A', letra_final='Z', maiscula=True):
-        intervalo = []
-        if isinstance(letra_inicial, str) and isinstance(letra_final, str):
-            letra_inicial = letra_inicial.upper() if maiscula else letra_inicial.lower()
-            letra_final = letra_final.upper() if maiscula else letra_final.lower()
-            intervalo = [chr(x) for x in range(ord(letra_inicial), ord(letra_final) + 1)]
-        return intervalo
+def intervalo_letras(letra_inicial='A', letra_final='Z', maiscula=True):
+    intervalo = []
+    if isinstance(letra_inicial, str) and isinstance(letra_final, str):
+        letra_inicial = letra_inicial.upper() if maiscula else letra_inicial.lower()
+        letra_final = letra_final.upper() if maiscula else letra_final.lower()
+        intervalo = [chr(x) for x in range(ord(letra_inicial), ord(letra_final) + 1)]
+    return intervalo
 
-    def intervalo_com_excecoes(self, letra_inicial='A', letra_final='Z', maiscula=True, lista_excecoes=[]):
-        intervalo = self.intervalo_letras(letra_inicial, letra_final, maiscula)
-        if intervalo and lista_excecoes:
-            lista_intervalos = []
-            for excecao in lista_excecoes:
-                if isinstance(excecao, str):
-                    if "-" in excecao:
-                        inicio_excecao = excecao.split("-")[0] if len(excecao.split("-")[0]) == 1 else excecao.split("-")[0][0]
-                        fim_excecao = excecao.split("-")[1] if len(excecao.split("-")[1]) == 1 else excecao.split("-")[1][0]
-                        inicio_excecao = inicio_excecao.upper() if maiscula else inicio_excecao.lower()
-                        fim_excecao = fim_excecao.upper() if maiscula else fim_excecao.lower()
-                        lista_intervalos += self.intervalo_letras(inicio_excecao, fim_excecao, maiscula)
-                    else:
-                        lista_intervalos += [excecao[0].upper() if maiscula else excecao[0].lower()]
-            if lista_intervalos:
-                for del_letra in lista_intervalos:
-                    intervalo.remove(del_letra)
-        return intervalo
+def intervalo_com_excecoes(letra_inicial='A', letra_final='Z', maiscula=True, lista_excecoes=[]):
+    intervalo = intervalo_letras(letra_inicial, letra_final, maiscula)
+    if intervalo and lista_excecoes:
+        lista_intervalos = []
+        for excecao in lista_excecoes:
+            if isinstance(excecao, str):
+                if "-" in excecao:
+                    inicio_excecao = excecao.split("-")[0] if len(excecao.split("-")[0]) == 1 else excecao.split("-")[0][0]
+                    fim_excecao = excecao.split("-")[1] if len(excecao.split("-")[1]) == 1 else excecao.split("-")[1][0]
+                    inicio_excecao = inicio_excecao.upper() if maiscula else inicio_excecao.lower()
+                    fim_excecao = fim_excecao.upper() if maiscula else fim_excecao.lower()
+                    lista_intervalos += intervalo_letras(inicio_excecao, fim_excecao, maiscula)
+                else:
+                    lista_intervalos += [excecao[0].upper() if maiscula else excecao[0].lower()]
+        if lista_intervalos:
+            for del_letra in lista_intervalos:
+                intervalo.remove(del_letra)
+    return intervalo
 
 class TabelaHTML():
 
@@ -154,6 +149,7 @@ class TabelaHTML():
     numera_linhas = True
     cabecalho = []
     cabecalho_tipo_planilha = True
+    inicio_contagem = 0
 
     def gerar_tabela(self, lista):
 
@@ -188,7 +184,7 @@ class TabelaHTML():
             celulas_linha = ""
             for j, coluna in enumerate(linha):
                 if j == 0 and self.numera_linhas:
-                    celulas_linha = self.formata_celula_linha(i+1, True)
+                    celulas_linha = self.formata_celula_linha(i+self.inicio_contagem, True)
                 celulas_linha += self.formata_celula_linha(coluna)
             celulas_corpo += "<tr>{}</tr>".format(celulas_linha)
         return "<table class='{}'><thead>{}</thead><tbody>{}</tbody></table>".format(self.class_padrao,

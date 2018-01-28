@@ -28,11 +28,24 @@ class FuncaoArquivo(models.Model):
     def __str__(self):
         return self.descricao_funcao_arquivo
 
+class ModeloAlvo(models.Model):
+    nome_modelo = models.CharField("Nome do modelo alvo", max_length=25, blank=False)
+    app_modelo = models.CharField("Aplicativo do modelo", max_length=50, blank=False)
+
+    class Meta:
+        ordering = ["nome_modelo"]
+        verbose_name = "Modelo alvo"
+        verbose_name_plural = "Modelos alvos"
+
+    def __str__(self):
+        return self.nome_modelo
 
 class FiltroImportacao(models.Model):
 
     nome_filtro = models.CharField("Nome do filtro", max_length=40, blank=False)
     descricao_filtro = models.TextField("Descrição da função do filtro", blank=True)
+    modelo_destino = models.ForeignKey(ModeloAlvo, verbose_name="Nome da tabela de destino", on_delete=models.SET_NULL, null=True)
+    correspondencias_campos = models.TextField("Correspondência entre campos e colunas planilha", blank=True)
     tipo_arquivo = models.ForeignKey(TipoArquivo, verbose_name="Se aplica a que tipo de arquivo?", on_delete=models.SET_NULL, null=True)
     linha_inicial = models.PositiveIntegerField("Linha inicial", default=0)
     linha_final = models.PositiveIntegerField("Linha final", default=20)
@@ -40,6 +53,13 @@ class FiltroImportacao(models.Model):
     coluna_final = models.CharField("Coluna final", max_length=3, default='L')
     excecao_linhas = models.CharField("Linhas que não devem ser processadas", max_length=50, blank=True)
     excecao_colunas = models.CharField("Colunas que não devem ser processadas", max_length=50, blank=True)
+    funcoes_colunas = models.TextField("Quais as funções que serão aplicadas as colunas", blank=True)
+    funcoes_linhas = models.TextField("Quais as funções que serão aplicadas as linhas", blank=True)
+
+    @property
+    def parametros(self):
+        return "Linha inicial: {} Linha final: {} Coluna inicial: {} Coluna final: {}".\
+            format(self.linha_inicial, self.linha_final, self.coluna_inicial, self.coluna_final)
 
     def __str__(self):
         return self.nome_filtro
@@ -66,5 +86,7 @@ class Arquivo(models.Model):
 
     def __str__(self):
         return self.arquivo_carga.name
+
+
 
 
