@@ -9,7 +9,7 @@
                 <tr>
                     <th>Nome do projeto</th>
                     <th>Proponente</th>
-                    <th colspan="2">Orcamentos</th>
+                    <th colspan="3">Orcamentos</th>
                     <th>Pagamentos</th>
                     <th>Tarefas</th>
                 </tr>
@@ -21,6 +21,7 @@
                         <td>{{projeto.cliente_projeto}}</td>
                         <td><a href="{% url 'controleorcamentario' id_projeto=projeto.id %}">Controle</a> </td>
                         <td><a href="{% url 'listaorcamentos' id=projeto.id %}">Elaboração</a> </td>
+                        <td><a href="{% url 'planilhascarregadas' id_projeto=projeto.id %}">Carregar planilha</a> </td>
                         <td><a href="{% url 'pagamentos' id_projeto=projeto.id %}">Pagamento</a></td>
                         <td><a href="{% url 'tarefas' id_projeto=projeto.id %}">Tarefas</a></td>
                     </tr>

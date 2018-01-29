@@ -20,9 +20,9 @@ urlpatterns = [
     url(r'^desativarorcamento/(?P<id>[0-9]+)/$', views.desativarorcamento, name='desativarorcamento'),
     url(r'^controleorcamentario/(?P<id_projeto>[0-9]+)/$', views.controleorcamentario, name='controleorcamentario'),
     url(r'^download_controle_excel/(?P<id_projeto>[0-9]+)/$', views.download_controle_excel, name='download_controle_excel'),
-    url(r'^carrega_orcamento/$', views.carrega_orcamento, name='carrega_orcamento'),
     url(r'^novoorcamento/(?P<id_projeto>[0-9]+)/$', views.novoorcamento, name='novoorcamento'),
-    url(r'^planilhascarregadas/$', views.planilhascarregadas, name='planilhascarregadas'),
-    url(r'^exibir_planilha/(?P<id_arquivo>[0-9]+)/$', views.exibir_planilha, name='exibir_planilha'),
+    #url(r'^carrega_orcamento/$', views.carrega_orcamento, name='carrega_orcamento'),
+    #url(r'^planilhascarregadas/$', views.planilhascarregadas, name='planilhascarregadas'),
+    #url(r'^exibir_planilha/(?P<id_arquivo>[0-9]+)/$', views.exibir_planilha, name='exibir_planilha'),
 
 ]

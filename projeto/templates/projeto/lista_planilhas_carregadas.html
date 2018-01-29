@@ -4,7 +4,7 @@
 {% block conteudo %}
     <div class="">
         <h5>Planilhas orçamentárias carregadas</h5>
-        <a href="{% url 'carrega_orcamento' %}">Carregar nova planilha</a>
+        <a href="{% url 'carrega_orcamento' id_projeto=id_projeto %}">Carregar nova planilha</a>
         {% if arquivos %}
             <table class="table table-bordered">
               <thead>

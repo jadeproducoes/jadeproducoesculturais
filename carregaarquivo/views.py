@@ -1,21 +1,31 @@
+from projeto.models import Projeto
 from .forms import FormUploadArquivo
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from utils.utilitarios import *
 from openpyxl import load_workbook
-from .models import Arquivo, FiltroImportacao
+from .models import *
 import xlrd
 
 class Carregaarquivo():
 
-    formulario = FormUploadArquivo()
     cabecalho_formulario = '<form method="post" enctype="multipart/form-data"><table class="table">'
+    objeto_associado = ""
     rodape_formulario = '</table><button type="submit">Carregar</button></form>'
+
+    def formulario(self):
+        if self.objeto_associado:
+            form = FormUploadArquivo(initial={'objeto_associado':self.objeto_associado})
+        else:
+            form = FormUploadArquivo()
+        return form
 
     def model_form_upload(self, request):
         if request.method == 'POST':
             form_upload = FormUploadArquivo(request.POST, request.FILES)
             if form_upload.is_valid():
+                #print("id_obj: {} e o Outro: {}".format(request.POST['id_objeto'], form_upload.hidden_fields()))
+                #form_upload.objeto_associado = request.POST['id_objeto']
                 form_upload.save()
                 self.formulario = None
             else:

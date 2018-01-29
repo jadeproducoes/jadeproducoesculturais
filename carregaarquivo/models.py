@@ -1,4 +1,9 @@
+from enum import Enum
+
 from django.db import models
+from django import forms
+from projeto.models import Projeto
+import collections
 
 # Create your models here.
 
@@ -69,15 +74,16 @@ class FiltroImportacao(models.Model):
         verbose_name = "Filtro de importação"
         verbose_name_plural = "Filtro de importações"
 
+ObjetoAssociado = collections.namedtuple('ObjetoAssociado', ['indice', 'valor'])
 
 class Arquivo(models.Model):
-
     descricao = models.TextField("Descreva o arquivo", blank=False)
     arquivo_carga = models.FileField("Carregar arquivo")
     tipo_arquivo = models.ForeignKey(TipoArquivo, verbose_name="Tipo de arquivo", null=True, on_delete=models.SET_NULL)
     funcao_arquivo = models.ForeignKey(FuncaoArquivo, verbose_name="Função", null=True, on_delete=models.SET_NULL)
-    data_uploaded = models.DateTimeField(auto_now_add=True)
     filtro = models.ForeignKey(FiltroImportacao, verbose_name="Filtro de importação", null=True, on_delete=models.SET_NULL)
+    objeto_associado = models.CharField(blank=True, default='0', max_length=60)
+    data_uploaded = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["-data_uploaded"]

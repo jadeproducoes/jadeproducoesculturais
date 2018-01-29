@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+
+from carregaarquivo.forms import FormExibePlanilha
+from carregaarquivo.models import Arquivo, FuncaoArquivo, TipoArquivo
 from .models import Projeto, Tarefa
 from utils.utilitarios import *
 from openpyxl import Workbook
 from openpyxl import load_workbook
 import datetime
-from carregaarquivo.views import Carregaarquivo
+from carregaarquivo.views import Carregaarquivo, ImportaPlanilha
+
 
 # Create your views here.
 
@@ -64,13 +68,75 @@ def tarefaconcluida(request, id_tarefa):
 def tarefapendente(request, id_tarefa):
     pass
 
+def carrega_orcamento(request, id_projeto):
+    '''
+    View que constroi o formulario de upload das planilhas.
 
+    :param request:
+    :return: objeto upload_engine contendo formulario para upload de planilhas
+    '''
+    upload_engine = Carregaarquivo()
+    upload_engine.objeto_associado = 'Projeto.pk=[{}]'.format(id_projeto)
+    if not upload_engine.model_form_upload(request):
+        return redirect('planilhascarregadas', id_projeto=id_projeto)
+    return render(request, 'projeto/carregaorcamento.html', {'upload':upload_engine})
 
-'''
-    if request.method == 'POST' and request.FILES['planilha']:
-        planilha = request.FILES['planilha']
-        fs = FileSystemStorage()
-        filename = fs.save(planilha.name, planilha)
-        uploadad_file_url = fs.url(filename)
-        return render(request, 'projeto/carregaorcamento.html', {'uploadad_file_url':uploadad_file_url})
-'''
+def planilhascarregadas(request, id_projeto):
+    '''
+    Recupera a lista das planilhas que foram carregadas para a pasta MEDIA.
+    :param request:
+    :return: lista dos registros contendo os arquivos de planilha
+    '''
+    arquivos_planilha = TipoArquivo.objects.filter(extencao_arquivo__in = ['xls', 'xlsx'])
+    funcao_orcamento = FuncaoArquivo.objects.filter(sigla_funcao='PLO')
+    arquivos = Arquivo.objects.filter(tipo_arquivo__in = list(arquivos_planilha),
+                                      funcao_arquivo = funcao_orcamento[0],
+                                      objeto_associado__contains = 'Projeto.pk=[{}]'.format(id_projeto))
+    return render(request, 'projeto/lista_planilhas_carregadas.html', {'arquivos':arquivos, 'id_projeto':id_projeto})
+
+def exibir_planilha(request, id_arquivo):
+    '''
+    Monta e exibe uma tabela a partir de uma planilha excel carregada previamente carregada na pasta MEDIA.
+
+    :param request: class HttpRequest
+    :param id_arquivo: PK proveniente da tabela de dados dos arquivos carregados na pasta MEDIA
+    :return: uma STR contendo a tabela a ser renderizada no template
+    '''
+    planilha = ""
+    arquivo = Arquivo.objects.get(pk=id_arquivo)
+
+    if arquivo:
+
+        planilha_importada = False
+        ipp = ImportaPlanilha()
+        if arquivo.filtro:
+            ipp.ativa_filtro(arquivo.filtro)
+
+        if request.method == 'POST':
+            formulario = FormExibePlanilha(request.POST)
+            if formulario.is_valid():
+                ipp.set_linha_final(int(formulario.cleaned_data['linha_final']))
+                ipp.set_desconsidera_linhas(formulario.cleaned_data['desconsiderar_linhas'])
+                if formulario.cleaned_data['acao'] == 'Importar':
+                    print("*****Agora vou importar com a porra toda*****")
+        else:
+            if arquivo.filtro:
+                formulario = FormExibePlanilha({'linha_final':arquivo.filtro.linha_final,
+                                                'desconsiderar_linhas':arquivo.filtro.excecao_linhas})
+            else:
+                formulario = FormExibePlanilha()
+
+        planilha_importada = ipp.importa_planilha(arquivo)
+
+        tb = TabelaHTML()
+        tb.class_padrao = 'table table-bordered'
+        if planilha_importada:
+            tb.numera_linhas = True
+            tb.inicio_contagem = ipp.get_linha_inicial()
+            planilha = tb.gerar_tabela(planilha_importada)
+        else:
+            tb.numera_linhas = False
+            planilha = 'Não foi possível importar a planilha. Verifique se o filtro está ajustado ou se o arquivo está presente'
+
+    return render(request, 'projeto/exibe_planilha.html', {'planilha':planilha, 'arquivo':arquivo, 'formulario':formulario})
+
