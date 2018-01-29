@@ -24,8 +24,6 @@ class Carregaarquivo():
         if request.method == 'POST':
             form_upload = FormUploadArquivo(request.POST, request.FILES)
             if form_upload.is_valid():
-                #print("id_obj: {} e o Outro: {}".format(request.POST['id_objeto'], form_upload.hidden_fields()))
-                #form_upload.objeto_associado = request.POST['id_objeto']
                 form_upload.save()
                 self.formulario = None
             else:

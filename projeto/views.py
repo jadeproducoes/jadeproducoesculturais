@@ -24,10 +24,8 @@ def tarefas(request, id_projeto):
     pendentes = {}
     em_andamento = {}
     concluidas = {}
-    print("Entrei nada!" + str(tarefas))
     if tarefas:
         cor_prioridade = ""
-        print("Pelo menos entrei")
         for tarefa in tarefas:
             envolvidos = "Responsável: " + str(tarefa.responsavel) + "\nEnvolvidos: " + tarefa.envolvidos
             if tarefa.prioridade == 0:
@@ -43,7 +41,6 @@ def tarefas(request, id_projeto):
                     'data_criacao':tarefa.data_criacao,
                     'data_limite':tarefa.data_conclusao,
                     'cor_prioridade':cor_prioridade}
-            print(item)
             if tarefa.status == 0:
                 pendentes[tarefa.pk] = item
             elif tarefa.status == 1:
@@ -87,14 +84,15 @@ def planilhascarregadas(request, id_projeto):
     :param request:
     :return: lista dos registros contendo os arquivos de planilha
     '''
+    projeto = Projeto.objects.get(pk=id_projeto)
     arquivos_planilha = TipoArquivo.objects.filter(extencao_arquivo__in = ['xls', 'xlsx'])
     funcao_orcamento = FuncaoArquivo.objects.filter(sigla_funcao='PLO')
     arquivos = Arquivo.objects.filter(tipo_arquivo__in = list(arquivos_planilha),
                                       funcao_arquivo = funcao_orcamento[0],
                                       objeto_associado__contains = 'Projeto.pk=[{}]'.format(id_projeto))
-    return render(request, 'projeto/lista_planilhas_carregadas.html', {'arquivos':arquivos, 'id_projeto':id_projeto})
+    return render(request, 'projeto/lista_planilhas_carregadas.html', {'arquivos':arquivos, 'projeto':projeto})
 
-def exibir_planilha(request, id_arquivo):
+def exibir_planilha(request, id_projeto, id_arquivo):
     '''
     Monta e exibe uma tabela a partir de uma planilha excel carregada previamente carregada na pasta MEDIA.
 
@@ -102,6 +100,8 @@ def exibir_planilha(request, id_arquivo):
     :param id_arquivo: PK proveniente da tabela de dados dos arquivos carregados na pasta MEDIA
     :return: uma STR contendo a tabela a ser renderizada no template
     '''
+
+    projeto = Projeto.objects.get(pk=id_projeto)
     planilha = ""
     arquivo = Arquivo.objects.get(pk=id_arquivo)
 
@@ -113,7 +113,7 @@ def exibir_planilha(request, id_arquivo):
             ipp.ativa_filtro(arquivo.filtro)
 
         if request.method == 'POST':
-            formulario = FormExibePlanilha(request.POST)
+            formulario = FormExibePlanilha(request.POST, initial={'acao': 'Vizualizar'})
             if formulario.is_valid():
                 ipp.set_linha_final(int(formulario.cleaned_data['linha_final']))
                 ipp.set_desconsidera_linhas(formulario.cleaned_data['desconsiderar_linhas'])
@@ -122,9 +122,10 @@ def exibir_planilha(request, id_arquivo):
         else:
             if arquivo.filtro:
                 formulario = FormExibePlanilha({'linha_final':arquivo.filtro.linha_final,
-                                                'desconsiderar_linhas':arquivo.filtro.excecao_linhas})
+                                                'desconsiderar_linhas':arquivo.filtro.excecao_linhas},
+                                               initial={'acao': 'Vizualizar'})
             else:
-                formulario = FormExibePlanilha()
+                formulario = FormExibePlanilha(initial={'acao': 'Vizualizar'})
 
         planilha_importada = ipp.importa_planilha(arquivo)
 
@@ -138,5 +139,6 @@ def exibir_planilha(request, id_arquivo):
             tb.numera_linhas = False
             planilha = 'Não foi possível importar a planilha. Verifique se o filtro está ajustado ou se o arquivo está presente'
 
-    return render(request, 'projeto/exibe_planilha.html', {'planilha':planilha, 'arquivo':arquivo, 'formulario':formulario})
+    return render(request, 'projeto/exibe_planilha.html', {'planilha':planilha,'arquivo':arquivo,
+                                                           'formulario':formulario, 'projeto':projeto})
 

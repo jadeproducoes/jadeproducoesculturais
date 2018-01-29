@@ -3,7 +3,7 @@
 
 {% block conteudo %}
     <div class="">
-        <h5>Nome da planilha: <b>{{arquivo.arquivo_carga.name}}</b></h5>
+        <h5>Nome da planilha: <b>{{arquivo.arquivo_carga.name}} do projeto {{projeto.nome_projeto}} </b></h5>
         {% if arquivo.filtro %}
             <div class="alert alert-danger">
                 <p><b>Filtro de importação utilizado</b></p>
@@ -12,10 +12,10 @@
                 <p>Parâmetros: {{arquivo.filtro.parametros}}</p>
             </div>
         {% endif %}
-        <p><a href="{% url 'planilhascarregadas' %}">Retornar a lista de planilhas</a></p>
+        <p><a href="{% url 'planilhascarregadas' id_projeto=projeto.pk %}">Retornar a lista de planilhas</a></p>
         {% if planilha %}
             <div class="alert alert-secondary">
-                <form action="{% url 'exibir_planilha' id_arquivo=arquivo.id%}" method="post" class="post-form">
+                <form action="{% url 'exibir_planilha' id_projeto=projeto.pk id_arquivo=arquivo.id%}" method="post" class="post-form">
                     {% csrf_token %}
                     <table>
                         {{formulario.as_table}}

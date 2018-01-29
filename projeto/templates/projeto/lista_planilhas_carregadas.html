@@ -3,8 +3,8 @@
 
 {% block conteudo %}
     <div class="">
-        <h5>Planilhas orçamentárias carregadas</h5>
-        <a href="{% url 'carrega_orcamento' id_projeto=id_projeto %}">Carregar nova planilha</a>
+        <h5>Planilhas orçamentárias carregadas para o projeto {{projeto.nome_projeto}}</h5>
+        <a href="{% url 'carrega_orcamento' id_projeto=projeto.pk %}">Carregar nova planilha</a>
         {% if arquivos %}
             <table class="table table-bordered">
               <thead>
@@ -20,7 +20,7 @@
                     <tr>
                       <td align="center">{{forloop.counter}}</td>
                       <td align="left">
-                          <a href="{% url 'exibir_planilha' id_arquivo=arquivo.pk %}">{{arquivo.arquivo_carga}}</a>
+                          <a href="{% url 'exibir_planilha' id_projeto=projeto.pk id_arquivo=arquivo.pk %}">{{arquivo.arquivo_carga}}</a>
                       </td>
                       <td align="left">{{arquivo.descricao}}</td>
                       <td align="center">{{arquivo.data_uploaded|date:"d/m/y"}}</td>
