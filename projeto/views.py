@@ -108,6 +108,8 @@ def exibir_planilha(request, id_projeto, id_arquivo):
     if arquivo:
 
         planilha_importada = False
+        desconsiderar_linha = ""
+
         ipp = ImportaPlanilha()
         if arquivo.filtro:
             ipp.ativa_filtro(arquivo.filtro)
@@ -116,13 +118,15 @@ def exibir_planilha(request, id_projeto, id_arquivo):
             formulario = FormExibePlanilha(request.POST, initial={'acao': 'Vizualizar'})
             if formulario.is_valid():
                 ipp.set_linha_final(int(formulario.cleaned_data['linha_final']))
-                ipp.set_desconsidera_linhas(formulario.cleaned_data['desconsiderar_linhas'])
+                desconsiderar_linha = formulario.cleaned_data['desconsiderar_linhas']
+                ipp.set_desconsidera_linhas(desconsiderar_linha)
                 if formulario.cleaned_data['acao'] == 'Importar':
                     print("*****Agora vou importar com a porra toda*****")
         else:
             if arquivo.filtro:
+                desconsiderar_linha = arquivo.filtro.excecao_linhas
                 formulario = FormExibePlanilha({'linha_final':arquivo.filtro.linha_final,
-                                                'desconsiderar_linhas':arquivo.filtro.excecao_linhas},
+                                                'desconsiderar_linhas':desconsiderar_linha},
                                                initial={'acao': 'Vizualizar'})
             else:
                 formulario = FormExibePlanilha(initial={'acao': 'Vizualizar'})
@@ -134,6 +138,8 @@ def exibir_planilha(request, id_projeto, id_arquivo):
         if planilha_importada:
             tb.numera_linhas = True
             tb.inicio_contagem = ipp.get_linha_inicial()
+            tb.intevalo_marcacao_cor_especial = lista_de_intervalos(desconsiderar_linha)
+            tb.cor_especial = cores('alerta')
             planilha = tb.gerar_tabela(planilha_importada)
         else:
             tb.numera_linhas = False

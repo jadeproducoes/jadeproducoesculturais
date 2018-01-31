@@ -149,22 +149,41 @@ def lista_de_intervalos(descrisao_intervalo):
     lista_intervalos = []
     if descrisao_intervalo:
         blocos_intervalo = descrisao_intervalo.split(";")
-        if len(blocos_intervalo) == 1:
-            lista_intervalos += [int(blocos_intervalo[0])]
-        else:
-            for elemento in blocos_intervalo:
-                if "-" in elemento:
-                    try:
-                        elementos = elemento.split("-")
-                        inicio = int(elementos[0])
-                        fim = int(elementos[1])
-                        lista_intervalos += range(inicio, fim+1)
-                    except ValueError:
-                        print("Erro nos intervalos de linha. Revise: '{}'. Ex.:'3-5;11;21-23'".format(descrisao_intervalo))
-                        raise
-                else:
-                    lista_intervalos += [int(elemento)]
+        #if len(blocos_intervalo) == 1:
+        #    lista_intervalos += [int(blocos_intervalo[0])]
+        #else:
+        for elemento in blocos_intervalo:
+            if "-" in elemento:
+                try:
+                    elementos = elemento.split("-")
+                    inicio = int(elementos[0])
+                    fim = int(elementos[1])
+                    lista_intervalos += range(inicio, fim+1)
+                except ValueError:
+                    print("Erro nos intervalos de linha. Revise: '{}'. Ex.:'3-5;11;21-23'".format(descrisao_intervalo))
+                    raise
+            else:
+                lista_intervalos += [int(elemento)]
     return sorted(lista_intervalos)
+
+def nr_esta_no_intervalo(nr, descrisao_intervalo):
+    '''
+    Verifica se um determinado número está presente nos intervalos escritos como 3-5;11;21-23.
+
+    :param nr: numero que se desenja descobrir se esta no intervalo
+    :param descrisao_intervalo:
+    :return: True se o numero estiver no intervalo; False se nao estiver
+    '''
+    pertence_intervalo = False
+    try:
+        nr = nr if isinstance(nr, int) else int(nr)
+    except:
+        raise ValueError("O número {} não pode ser convertido num inteiro".format(nr))
+
+    if nr in lista_de_intervalos(descrisao_intervalo):
+        pertence_intervalo = True
+
+    return pertence_intervalo
 
 class TabelaHTML():
 
@@ -179,6 +198,9 @@ class TabelaHTML():
     cabecalho = []
     cabecalho_tipo_planilha = True
     inicio_contagem = 0
+    cor_especial = None
+    intevalo_marcacao_cor_especial = []
+    cor_padrao_linhas = ""
 
     def gerar_tabela(self, lista):
 
@@ -209,13 +231,18 @@ class TabelaHTML():
                 celulas_cabecalho = self.formata_celula_cabecalho("Nr") + celulas_cabecalho
             celulas_cabecalho = "<tr>{}</tr>".format(celulas_cabecalho)
 
+        if self.inicio_contagem > 0:
+            self.intevalo_marcacao_cor_especial = [(i-self.inicio_contagem) for i in self.intevalo_marcacao_cor_especial]
+
         for i, linha in enumerate(lista):
             celulas_linha = ""
             for j, coluna in enumerate(linha):
                 if j == 0 and self.numera_linhas:
                     celulas_linha = self.formata_celula_linha(i+self.inicio_contagem, True)
                 celulas_linha += self.formata_celula_linha(coluna)
-            celulas_corpo += "<tr>{}</tr>".format(celulas_linha)
+            cor = self.cor_especial if self.intevalo_marcacao_cor_especial and \
+                                       i in self.intevalo_marcacao_cor_especial else self.cor_padrao_linhas
+            celulas_corpo += "<tr bgcolor='{}'>{}</tr>".format(cor, celulas_linha)
         return "<table class='{}'><thead>{}</thead><tbody>{}</tbody></table>".format(self.class_padrao,
                                                                                      celulas_cabecalho,celulas_corpo)
 
