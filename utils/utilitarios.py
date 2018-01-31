@@ -139,6 +139,33 @@ def intervalo_com_excecoes(letra_inicial='A', letra_final='Z', maiscula=True, li
                 intervalo.remove(del_letra)
     return intervalo
 
+def lista_de_intervalos(descrisao_intervalo):
+    '''
+    Calcula os intervalos de indices a partir de uma string Ex.: 3-5;11;21-23 retorna [3,4,5,11,21,22,23].
+
+    :param descrisao_intervalo:
+    :return: lista representando os intervalos
+    '''
+    lista_intervalos = []
+    if descrisao_intervalo:
+        blocos_intervalo = descrisao_intervalo.split(";")
+        if len(blocos_intervalo) == 1:
+            lista_intervalos += [int(blocos_intervalo[0])]
+        else:
+            for elemento in blocos_intervalo:
+                if "-" in elemento:
+                    try:
+                        elementos = elemento.split("-")
+                        inicio = int(elementos[0])
+                        fim = int(elementos[1])
+                        lista_intervalos += range(inicio, fim+1)
+                    except ValueError:
+                        print("Erro nos intervalos de linha. Revise: '{}'. Ex.:'3-5;11;21-23'".format(descrisao_intervalo))
+                        raise
+                else:
+                    lista_intervalos += [int(elemento)]
+    return sorted(lista_intervalos)
+
 class TabelaHTML():
 
     linha_inicial = 0
@@ -199,6 +226,8 @@ class TabelaHTML():
     def formata_celula_linha(self, valor, negrito=False):
         celula = "<td><b>{}</b></td>" if negrito else "<td>{}</td>"
         return celula.format(valor)
+
+
 
 
 class ChoiceEnum(Enum):

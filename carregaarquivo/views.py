@@ -170,8 +170,6 @@ class ImportaPlanilha():
                     (ord(self.__coluna_inicial) > ord(self.__coluna_final)):
                 raise ValueError('A linha inicial é maior que a linha final ou a coluna inicial é maior que a coluna final')
 
-            print("LI {} LF{}".format(self.__linha_inicial, self.__linha_final))
-
             if extensao_arquivo(nome) == 'xlsx':
                 wb = load_workbook(ca.caminho_completo_arquivo(nome))
                 ws = wb.active
