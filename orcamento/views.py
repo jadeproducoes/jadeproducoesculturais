@@ -291,7 +291,27 @@ def controleorcamentario(request, id_projeto):
                                                                    'titulo_pagina':'Controle Orçamentário'})
 
 def download_controle_excel(request, id_projeto):
-    pass
+    projeto = Projeto.objects.get(pk=id_projeto)
+    if __name__ == '__main__':
+        if __name__ == '__main__':
+            pagamentos = Pagamento.objects.filter(id_projeto=projeto,
+                                                  id_orcamento=Orcamento.objects.filter(projeto_associado=Projeto,
+                                                                                        orcamento_escolhido=True)).\
+                order_by('data_pagamento')
+
+    if pagamentos:
+        planilha = []
+        for i, pagamento in enumerate(pagamentos):
+            linha_pagamento = {}
+            linha_pagamento['nr'] = i
+            linha_pagamento['data'] = pagamento.data_pagamento
+            linha_pagamento['valor_bruto'] = pagamento.valor_bruto_pagamento
+            linha_pagamento['valor_INSS'] = pagamento.valor_INSS
+            linha_pagamento['valor_ISS'] = pagamento.valor_ISS
+            linha_pagamento['valor_IR'] = pagamento.valor_IR
+            linha_pagamento['descontos'] = pagamento.total_descontos
+            linha_pagamento['valor_liquido'] = pagamento.valor_liquido
+            #linha_pagamento['nr_docs_pagamento'] =
 
 def novoorcamento(response, id_projeto):
     pass

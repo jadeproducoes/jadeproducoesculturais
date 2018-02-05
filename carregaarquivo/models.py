@@ -74,8 +74,6 @@ class FiltroImportacao(models.Model):
         verbose_name = "Filtro de importação"
         verbose_name_plural = "Filtro de importações"
 
-ObjetoAssociado = collections.namedtuple('ObjetoAssociado', ['indice', 'valor'])
-
 class Arquivo(models.Model):
     descricao = models.TextField("Descreva o arquivo", blank=False)
     arquivo_carga = models.FileField("Carregar arquivo")
@@ -92,7 +90,5 @@ class Arquivo(models.Model):
 
     def __str__(self):
         return self.arquivo_carga.name
-
-
 
 
