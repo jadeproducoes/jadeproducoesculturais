@@ -39,6 +39,8 @@ class Projeto(models.Model):
     inicio_inscricoes = models.DateField("Data de início das inscrições", null=True, blank=True)
     fim_inscricoes = models.DateField("Data final das inscrições", null=True, blank=True)
     valor_total = models.FloatField("Valor total (obtido do orçamento)", null=True, blank=True, default=0)
+    inicio_vigencia = models.DateTimeField("Início da vigência do projeto", null=True, blank=True)
+    tempo_maximo_realizacao = models.IntegerField("Tempo para realização", default=0, null=True, blank=True)
     FASE_PROJETO = (
         ('EL','Elaboração'),
         ('DS','Desenvolvido'),
