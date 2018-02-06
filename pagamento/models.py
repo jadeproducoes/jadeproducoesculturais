@@ -197,6 +197,9 @@ class ItemPagamento(models.Model):
                     #rubrica = ItemPagamento.objects.filter(id_rubrica=self.id_rubrica).aggregate(valor_usado=Sum('valor_bruto_pagamento'))
         return valor_usado
 
+    def __str__(self):
+        return "{} (R$ {})".format(self.id_rubrica, self.valor_bruto_pagamento)
+
     @property
     def saldo_rubrica(self):
         if self.id_rubrica is None:
@@ -204,7 +207,10 @@ class ItemPagamento(models.Model):
         else:
             return (self.id_rubrica.valor_liquido_rubrica - self.valor_usado_rubrica)
 
+
+
 class FormaDePagamento(models.Model):
+
     id_pagamento = models.ForeignKey(Pagamento, on_delete=models.CASCADE, null=True, blank=False)
     forma = models.CharField("Meio de pagamento", max_length=2, null=True, blank=False,
                              choices=formaspagamento(), default='CH')
@@ -214,14 +220,15 @@ class FormaDePagamento(models.Model):
     data_efetivacao = models.DateField("Data da efetivação", null=True, blank=True)
 
     def __str__(self):
-        op_pagamentos = formaspagamento()
-        nr_doc = "nº {}".format(self.nr_documento) if self.nr_documento else ""
-        return "{} ".format([(forma) for forma in op_pagamentos if self.forma in forma][0][1]) + nr_doc
+        desc_forma = [(forma) for forma in formaspagamento() if self.forma in forma][0][1]
+        nr_doc = self.nr_documento if self.nr_documento else "0000"
+        return "{} nº {} (R$ {})".format(desc_forma, nr_doc, float(self.valor))
 
     class Meta:
         verbose_name_plural = "Formas de Pagamento"
         verbose_name = "Forma de Pagamento"
 
+'''
     @property
     def meio_pagamento(self):
         meios = formaspagamento()
@@ -230,8 +237,10 @@ class FormaDePagamento(models.Model):
             if meio[0] == self.forma:
                 nome_meio = meio[1]
         return nome_meio
+'''
 
 class FormaComprovacao(models.Model):
+
     id_pagamento = models.ForeignKey(Pagamento, on_delete=models.CASCADE, null=True, blank=False)
     tipo_comprovacao = models.CharField("Tipo de comprovação", max_length=2, default='NF', null=True, blank=True,
                                         choices=tipocomprovacao())
@@ -242,10 +251,13 @@ class FormaComprovacao(models.Model):
     data_recebimento = models.DateField("Data do recebimento", null=True, blank=True)
 
     def __str__(self):
-        op_comprovacao = tipocomprovacao()
-        nr_doc = "nº {}".format(self.nr_doc_comprovacao) if self.nr_doc_comprovacao else ""
-        return "{} ".format([(forma) for forma in op_comprovacao if self.tipo_comprovacao in forma][0][1]) + nr_doc
+        desc_forma = [(forma) for forma in tipocomprovacao() if self.tipo_comprovacao in forma][0][1]
+        nr_doc = self.nr_doc_comprovacao if self.nr_doc_comprovacao else "0000"
+        return "{} nº {} (R$ {})".format(desc_forma, nr_doc, float(self.valor))
 
+
+
+'''
     @property
     def meio_comprovacao(self):
         meios = tipocomprovacao()
@@ -254,3 +266,4 @@ class FormaComprovacao(models.Model):
             if meio[0] == self.tipo_comprovacao:
                 nome_meio = meio[1]
         return nome_meio
+'''
