@@ -41,19 +41,32 @@ class Pagamento(models.Model):
 
     @property
     def lista_itens_pagamento(self):
-        str_itens = ""
+        str_itens = []
         if self.itens_pagamento:
             str_itens = [str(rubrica) for rubrica in self.itens_pagamento]
         return str_itens
 
     @property
-    def forma_pagamento(self):
+    def formas_pagamento(self):
         return FormaDePagamento.objects.filter(id_pagamento=self)
 
     @property
-    def forma_comprovacao(self):
+    def lista_formas_pagamento(self):
+        str_forma = []
+        if self.formas_pagamento:
+            str_forma = [str(forma) for forma in self.formas_pagamento]
+        return str_forma
+
+    @property
+    def formas_comprovacao(self):
         return FormaComprovacao.objects.filter(id_pagamento=self)
 
+    @property
+    def lista_formas_comprovacao(self):
+        str_forma = []
+        if self.formas_comprovacao:
+            str_forma = [str(forma) for forma in self.formas_comprovacao]
+        return str_forma
 
     @property
     def valor_bruto_pagamento(self):
@@ -200,6 +213,11 @@ class FormaDePagamento(models.Model):
     data_emissao = models.DateField("Data da emissão", default=timezone.now)
     data_efetivacao = models.DateField("Data da efetivação", null=True, blank=True)
 
+    def __str__(self):
+        op_pagamentos = formaspagamento()
+        nr_doc = "nº {}".format(self.nr_documento) if self.nr_documento else ""
+        return "{} ".format([(forma) for forma in op_pagamentos if self.forma in forma][0][1]) + nr_doc
+
     class Meta:
         verbose_name_plural = "Formas de Pagamento"
         verbose_name = "Forma de Pagamento"
@@ -223,11 +241,15 @@ class FormaComprovacao(models.Model):
     data_emissao = models.DateField("Data da emissão", default=timezone.now)
     data_recebimento = models.DateField("Data do recebimento", null=True, blank=True)
 
+    def __str__(self):
+        op_comprovacao = tipocomprovacao()
+        nr_doc = "nº {}".format(self.nr_doc_comprovacao) if self.nr_doc_comprovacao else ""
+        return "{} ".format([(forma) for forma in op_comprovacao if self.tipo_comprovacao in forma][0][1]) + nr_doc
+
     @property
     def meio_comprovacao(self):
         meios = tipocomprovacao()
         nome_meio = ""
-        print("Meio escolhido:  %s" % self.tipo_comprovacao)
         for meio in meios:
             if meio[0] == self.tipo_comprovacao:
                 nome_meio = meio[1]
