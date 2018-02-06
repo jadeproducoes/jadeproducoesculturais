@@ -33,9 +33,9 @@
         <table class="table table-bordered">
             <tbody>
                 <tr>
-                    <td align="center">Valor solicitado: {{ orcamento.valor_bruto|floatformat:2 }}</td>
-                    <td align="center">Total das glosas: {{ orcamento.valor_glosas|floatformat:2 }}</td>
-                    <td align="center">Valor líquido recebido: {{ orcamento.valor_liquido|floatformat:2 }}</td>
+                    <td align="center">Valor solicitado: R$ {{ orcamento.valor_bruto|floatformat:2 }}</td>
+                    <td align="center">Total das glosas: R$ {{ orcamento.valor_glosas|floatformat:2 }}</td>
+                    <td align="center">Valor líquido recebido: R$ {{ orcamento.valor_liquido|floatformat:2 }}</td>
                     <td align="center" bgcolor="#00FFFF">
                         <a href="{% url 'novarubrica' id=orcamento.pk %}"><bold>Nova rubrica</bold></a>
                     </td>
@@ -85,11 +85,11 @@
                 </tr>
             {% endfor %}
                 <tr align="center">
-                    <td colspan="3">TOTAL</td>
-                    <td>{{ orcamento.valor_bruto|floatformat:2 }}</td>
-                    <td>{{ orcamento.valor_glosas|floatformat:2 }}</td>
+                    <td colspan="3"><b>TOTAL (R$)</b></td>
+                    <td><b>{{ orcamento.valor_bruto|floatformat:2 }}</b></td>
+                    <td><b>{{ orcamento.valor_glosas|floatformat:2 }}</b></td>
                     <td>-</td>
-                    <td>{{ orcamento.valor_liquido|floatformat:2 }}</td>
+                    <td><b>{{ orcamento.valor_liquido|floatformat:2 }}</b></td>
                     <td>-</td>
                     <td align="center">-</td>
                 </tr>

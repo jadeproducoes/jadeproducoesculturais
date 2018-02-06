@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^listaorcamentos/(?P<id>[0-9]+)/$', views.listaorcamentos, name='listaorcamentos'),
+    url(r'^(?P<id>[0-9]+)/listaorcamentos$', views.listaorcamentos, name='listaorcamentos'),
     url(r'^exibeorcamento/(?P<id>[0-9]+)/$', views.exibeorcamento, name='exibeorcamento'),
     url(r'^ultimo/$', views.ultimoorcamento, name='ultimoorcamento'),
     url(r'^primeirarubricadalista/(?P<id>[0-9]+)/$', views.primeirarubricadalista, name='primeirarubricadalista'),

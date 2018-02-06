@@ -13,7 +13,6 @@
         <p>Não existem orçamentos cadastrados para este projeto!</p>
     {% endif %}
     <p><a href="{% url 'novoorcamento' id_projeto=projeto.pk %}">Cadastrar novo orçamento</a></p>
-    <p><a href="{% url 'planilhascarregadas' %}">Carregar de arquivo de planilha</a></p>
     <p><a href="{% url 'index' %}">Voltar para a página de projetos</a></p>
 {% endblock %}
 

@@ -36,6 +36,26 @@ class Pagamento(models.Model):
         verbose_name = "Pagamento"
 
     @property
+    def itens_pagamento(self):
+        return ItemPagamento.objects.filter(id_pagamento=self)
+
+    @property
+    def lista_itens_pagamento(self):
+        str_itens = ""
+        if self.itens_pagamento:
+            str_itens = [str(rubrica) for rubrica in self.itens_pagamento]
+        return str_itens
+
+    @property
+    def forma_pagamento(self):
+        return FormaDePagamento.objects.filter(id_pagamento=self)
+
+    @property
+    def forma_comprovacao(self):
+        return FormaComprovacao.objects.filter(id_pagamento=self)
+
+
+    @property
     def valor_bruto_pagamento(self):
         total = ItemPagamento.objects.filter(id_pagamento=self).aggregate(somatorio=Sum('valor_bruto_pagamento'))
         if total['somatorio']:

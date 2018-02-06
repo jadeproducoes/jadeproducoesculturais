@@ -29,20 +29,34 @@
                       <th scope="col">Item(s)</th>
                       <th scope="col">Beneficiário(a)</th>
                       <th scope="col">Valor bruto</th>
-                      <th scope="col">Data</th>
+                      <th scope="col">ISS</th>
+                      <th scope="col">INSS</th>
+                      <th scope="col">IR</th>
+                      <th scope="col">Valor líquido</th>
+                      <th scope="col">Data do <br>pagamento</th>
+                      <th scope="col">Forma de <br>pagamento</th>
+                      <th scope="col">Data do <br>comprovação</th>
+                      <th scope="col">Forma de <br>comprovação</th>
                       <th scope="col">Editar</th>
                       <th scope="col">Pendencias</th>
                       <td scope="col">Eliminar</td>
                     </tr>
                   </thead>
                   <tbody>
-                    {% for id_pagamento, itens_pagamento, beneficiario, valor_pagamento, data_pagamento, pendencias in lista_pagamentos%}
+                    {% for id_pagamento, itens_pagamento, beneficiario, valor_bruto,ISS, INSS,IR, valor_liquido,
+                    data_pagamento, forma_pagamento, data_comprovacao, forma_comprovacao, pendencias in lista_pagamentos%}
                         <tr bgcolor="{{pendencias.cor}}">
                           <td align="center">{{forloop.counter}}</td>
                           <td align="left">{{itens_pagamento|linebreaks}}</td>
-                          <td align="left">{% if beneficiario %}{{beneficiario}}{% endif %}</td>
-                          <td align="center">{{valor_pagamento}}</td>
+                          <td align="left">{{beneficiario}}</td>
+                          <td align="center">{{valor_bruto}}</td>
+                          <td align="center">{{ISS}}</td>
+                          <td align="center">{{INSS}}</td>
+                          <td align="center">{{IR}}</td>
                           <td align="center">{{data_pagamento|date:"d/m/Y"}}</td>
+                          <td align="center">{{forma_pagamento}}</td>
+                          <td align="center">{{data_comprovacao}}</td>
+                          <td align="center">{{forma_comprovacao}}</td>
                           <td align="center"><a href="{% url 'pagamento' id_pagamento=id_pagamento %}">Editar</a></td>
                           <td align="center">{{pendencias.msg|linebreaks}}</td>
                           <td align="center">

@@ -24,6 +24,9 @@ def pagamentos(request, id_projeto):
                 valor_total_pagamentos += valor_pagamento['somatorio']
 
         lista_pagamentos = []
+        # Itens de cada pagamento id_pagamento, itens_pagamento, beneficiario, valor_bruto,ISS, INSS,IR, valor_liquido,
+        # data_pagamento, forma_pagamento, data_comprovacao, forma_comprovacao, pendencias
+
         for pagamento in pagamentos:
             # recupera os itens do padamento para apresentar um texto curto para cada uma na lista
             itens_pagamentos = ItemPagamento.objects.filter(id_pagamento=pagamento.id)
@@ -34,7 +37,7 @@ def pagamentos(request, id_projeto):
 
             if qtde_itens > 0:
                 for item in itens_pagamentos:
-                    lista_itens += (str(item.id_rubrica)[0:20])
+                    lista_itens += (str(item.id_rubrica))
                     conta_itens += 1
                     if conta_itens < qtde_itens:
                         lista_itens += "\n"

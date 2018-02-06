@@ -53,8 +53,10 @@ class Orcamento(models.Model):
     @property
     def valor_bruto(self):
         total = 0
-        if self.rubricas_orcamento:
-            total = self.rubricas_orcamento.aggregate(soma=Sum('valor_solicitado'))['soma']
+        rubricas = self.rubricas_orcamento
+        if rubricas:
+            for rubrica in rubricas:
+                total += rubrica.valor_bruto_rubrica
         return total
 
     @property
@@ -105,7 +107,7 @@ class RubricaOrcamento(models.Model):
         pass
 
     orcamento_associado = models.ForeignKey(Orcamento, on_delete=models.CASCADE, null=False)
-    identificacao_rubrica = models.CharField("Rubrica", max_length=40, null=True, blank=True)
+    identificacao_rubrica = models.CharField("Rubrica", max_length=80, null=True, blank=True)
     descricao_rubrica = models.TextField("Descrição da rubrica", null=False, blank=False)
     numero_rubrica = models.PositiveIntegerField("Ordem", default=0, null=False, blank=False)
     justificativa_rubrica = models.TextField("Justificativa", null=True, blank=True)
@@ -138,6 +140,10 @@ class RubricaOrcamento(models.Model):
     fase_projeto = models.CharField("Fase do projeto", max_length=3, null=True, blank=True, choices=FASE_PROJETO)
     fonte_financiamento = models.ForeignKey(FonteFinanciamento, null=True, blank=True, on_delete=models.SET_NULL)
     ativa = models.BooleanField("Rubrica ativa?", null=False, blank=False, default=True)
+
+    @property
+    def valor_bruto_rubrica(self):
+        return self.valor_solicitado * self.quantidade
 
     @property
     def valor_liquido_rubrica(self):
