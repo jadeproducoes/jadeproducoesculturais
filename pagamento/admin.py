@@ -5,3 +5,4 @@ from orcamento.models import *
 admin.site.register(Pagamento)
 admin.site.register(FormaComprovacao)
 admin.site.register(FormaDePagamento)
+admin.site.register(ItemPagamento)

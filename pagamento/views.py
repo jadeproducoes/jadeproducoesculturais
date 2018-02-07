@@ -17,11 +17,12 @@ def pagamentos(request, id_projeto):
     pagamentos = Pagamento.objects.filter(id_projeto=projeto).order_by('-data_pagamento')
     valor_total_pagamentos = 0
 
-    if pagamentos.count() > 0:
-        for pagamento in pagamentos:
-            valor_pagamento = ItemPagamento.objects.filter(id_pagamento=pagamento).aggregate(somatorio=Sum('valor_bruto_pagamento'))
-            if valor_pagamento['somatorio']:
-                valor_total_pagamentos += valor_pagamento['somatorio']
+    if pagamentos: #.count() > 0:
+        #for pagamento in pagamentos:
+        #    valor_pagamento = ItemPagamento.objects.filter(id_pagamento=pagamento).aggregate(somatorio=Sum('valor_bruto_pagamento'))
+        #    if valor_pagamento['somatorio']:
+        #        valor_total_pagamentos += valor_pagamento['somatorio']
+        valor_total_pagamentos += [pagamento.valor_bruto_pagamento for pagamento in pagamentos][0]
 
         lista_pagamentos = []
         # Itens de cada pagamento id_pagamento, itens_pagamento, beneficiario, valor_bruto,ISS, INSS,IR, valor_liquido,
