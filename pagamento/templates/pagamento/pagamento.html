@@ -5,9 +5,10 @@
     {% if pagamento %}
         <p>Projeto: {{pagamento.id_projeto}}
             [<a href="{% url 'pagamentos' id_projeto=pagamento.id_projeto.pk %}">Voltar para os pagamentos</a> -
-            <a href="/projeto/">Retornar aos projetos</a> ]
+            <a href="/projeto/">Retornar aos projetos</a> -
+            <a href="{% url 'novopagamento' id_projeto=pagamento.id_projeto.pk %}"><b>Novo pagamento</b></a> ]
         </p>
-        <p>Data do pagamento: {{pagamento.data_pagamento}}</p>
+        <p>Data do pagamento: {{pagamento.data_lancamento}}</p>
         <a href="#MEIOSPAGAMENTOS">Formas de pagamento</a> - <a href="#MEIOSCOMPROVACAO">Formas de comprovacao</a>
         <div class="alert alert-info">
             <p>

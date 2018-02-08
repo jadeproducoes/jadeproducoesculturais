@@ -6,6 +6,7 @@ from utils.utilitarios import *
 from orcamento.models import Orcamento, RubricaOrcamento
 from django.db.models import Sum
 from decimal import *
+import time
 
 # Create your models here.
 
@@ -23,8 +24,7 @@ class Pagamento(models.Model):
                                    verbose_name="Orçamento relacionado")
     cobrar_ISS = models.BooleanField("Cobra ISS?", default=True)
     cobrar_INSS = models.BooleanField("Cobrar INSS?", default=False)
-    data_pagamento = models.DateField("Data do pagamento", default=timezone.now)
-    data_efetivacao = models.DateField("Data do efetivação", default=timezone.now)
+    data_lancamento = models.DateField("Data do lançamento", default=timezone.now)
     pendente = models.BooleanField("Pagamento pendente?", default=True, null=False, blank=False)
     observacoes = models.TextField("Observações", max_length=200, null=True, blank=True)
 
@@ -32,7 +32,7 @@ class Pagamento(models.Model):
         return "Beneficiário(a) " + str(self.id_pessoa)
 
     class Meta:
-        ordering = ["-data_pagamento"]
+        ordering = ["-data_lancamento"]
         verbose_name_plural = "Pagamentos"
         verbose_name = "Pagamento"
 
@@ -132,30 +132,38 @@ class Pagamento(models.Model):
         cor = cores('padrao')
         mensagem = ""
         pendencias = {'existentes':False, 'cor':cor, 'msg':mensagem}
-
         existem_meios_pagamento = False
+        formas_pagamento = FormaDePagamento.objects.filter(id_pagamento=self)
+
         # Pendencia de forma de pagamento e a falta de lancamento da data de comepensacao
-        if FormaDePagamento.objects.filter(id_pagamento=self).exists():
-            formas_pagamento = FormaDePagamento.objects.filter(id_pagamento=self)
+        if formas_pagamento:
             existem_meios_pagamento = True
             for forma in formas_pagamento:
                 if not forma.data_efetivacao:
                     cor = cores('alerta')
-                    mensagem = "- Não existe indicação da compensação de um ou mais MEIOS DE PAGAMENTO"
+                    mensagem += "- Não existe indicação da compensação de um ou mais MEIOS DE PAGAMENTO"
+                    break
+                if not forma.data_emissao:
+                    cor = cores('alerta')
+                    mensagem += "\n" if mensagem else ""
+                    mensagem += "- Não foi registrada a data de emissão do pagamento de um ou mais MEIOS DE PAGAMENTO"
                     break
         else:
             mensagem = "- Não foram indicados os MEIOS DE PAGAMENTO"
 
         # Pendencia de forma de comprovacao podem gerar situacoes mais graves
-        if FormaComprovacao.objects.filter(id_pagamento=self).exists():
-            formas_comprovacao = FormaComprovacao.objects.filter(id_pagamento=self)
+        formas_comprovacao = FormaComprovacao.objects.filter(id_pagamento=self)
+        if formas_comprovacao:
             for forma in formas_comprovacao:
                 if not forma.data_recebimento:
                     cor = cores('alerta')
-                    if mensagem != "":
-                        mensagem += "\n"
+                    mensagem += "\n" if mensagem else ""
                     mensagem += "- Não existe(m) data(s) de registro(s) de recebimento de um ou mais MEIOS DE COMPROVAÇÃO"
                     break
+                if not forma.data_emissao:
+                    cor = cores('alerta')
+                    mensagem += "\n" if mensagem else ""
+                    mensagem += "- Não foi registrada a data de emissão do pagamento de um ou mais MEIOS DE COMPROVAÇÃO"
         else:
             if mensagem != "":
                 mensagem += "\n"
@@ -197,7 +205,6 @@ class ItemPagamento(models.Model):
                     for item in itens_pagamento:
                         if item.id_rubrica == self.id_rubrica:
                             valor_usado += item.valor_bruto_pagamento
-                    #rubrica = ItemPagamento.objects.filter(id_rubrica=self.id_rubrica).aggregate(valor_usado=Sum('valor_bruto_pagamento'))
         return valor_usado
 
     def __str__(self):
@@ -219,28 +226,25 @@ class FormaDePagamento(models.Model):
                              choices=formaspagamento(), default='CH')
     nr_documento = models.CharField("Nr. documento (cheque, transf., etc)", max_length=12, null=True, blank=False)
     valor = models.DecimalField("Valor desta forma pagamento (R$)", decimal_places=2, max_digits=10, default=0.0)
-    data_emissao = models.DateField("Data da emissão", default=timezone.now)
+    data_emissao = models.DateField("Data da emissão", default=timezone.now, null=True, blank=True)
     data_efetivacao = models.DateField("Data da efetivação", null=True, blank=True)
 
     def __str__(self):
         desc_forma = [(forma) for forma in formaspagamento() if self.forma in forma][0][1]
         nr_doc = self.nr_documento if self.nr_documento else "0000"
-        return "{} nº {} (R$ {})".format(desc_forma, nr_doc, float(self.valor))
+        dt_emissao = self.data_emissao.strftime("%d/%m/%y") if self.data_emissao else "--"
+        dt_efetivacao = self.data_efetivacao.strftime("%d/%m/%y") if self.data_efetivacao else "--"
+        return "{} nº {} (R$ {})\nRealizado em: {}\nEfetivato em: {}".format(desc_forma, nr_doc, float(self.valor),
+                                                                             dt_emissao, dt_efetivacao)
+    @property
+    def meio_pagamento(self):
+        desc_forma = [(forma) for forma in formaspagamento() if self.forma in forma][0][1]
+        return desc_forma
 
     class Meta:
         verbose_name_plural = "Formas de Pagamento"
         verbose_name = "Forma de Pagamento"
 
-'''
-    @property
-    def meio_pagamento(self):
-        meios = formaspagamento()
-        nome_meio = ""
-        for meio in meios:
-            if meio[0] == self.forma:
-                nome_meio = meio[1]
-        return nome_meio
-'''
 
 class FormaComprovacao(models.Model):
 
@@ -250,23 +254,13 @@ class FormaComprovacao(models.Model):
     nr_doc_comprovacao = models.CharField("Nr documento de comprovação", max_length=15, null=True, blank=False)
     valor = models.DecimalField("Valor do documento(R$)", decimal_places=2, max_digits=10,
                                 default=0.0)  # colocar limites
-    data_emissao = models.DateField("Data da emissão", default=timezone.now)
+    data_emissao = models.DateField("Data da emissão", default=timezone.now, blank=False, null=False)
     data_recebimento = models.DateField("Data do recebimento", null=True, blank=True)
 
     def __str__(self):
         desc_forma = [(forma) for forma in tipocomprovacao() if self.tipo_comprovacao in forma][0][1]
         nr_doc = self.nr_doc_comprovacao if self.nr_doc_comprovacao else "0000"
-        return "{} nº {} (R$ {})".format(desc_forma, nr_doc, float(self.valor))
-
-
-
-'''
-    @property
-    def meio_comprovacao(self):
-        meios = tipocomprovacao()
-        nome_meio = ""
-        for meio in meios:
-            if meio[0] == self.tipo_comprovacao:
-                nome_meio = meio[1]
-        return nome_meio
-'''
+        dt_emissao = self.data_emissao.strftime("%d/%m/%y") if self.data_emissao else "--"
+        dt_recebimento = self.data_recebimento.strftime("%d/%m/%y") if self.data_recebimento else "--"
+        return "{} nº {} (R$ {})\nEmitida em: {}\nRecebida em: {}".format(desc_forma, nr_doc, float(self.valor),
+                                                                          dt_emissao, dt_recebimento)

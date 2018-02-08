@@ -17,7 +17,7 @@ def pagamentos(request, id_projeto):
     projeto = Projeto.objects.get(pk=id_projeto)
     valor_total_orcamento = Orcamento.objects.filter(projeto_associado=projeto, orcamento_escolhido=True)[0].valor_liquido
     Pagamento.objects.filter(id_pessoa=None).delete()
-    pagamentos = Pagamento.objects.filter(id_projeto=projeto).order_by('-data_pagamento')
+    pagamentos = Pagamento.objects.filter(id_projeto=projeto).order_by('-data_lancamento')
     valor_total_pagamentos = 0
 
     if pagamentos:
@@ -25,8 +25,7 @@ def pagamentos(request, id_projeto):
         lista_pagamentos = []
         DetalhesPagamento = namedtuple('DetalhesPagamento', ('id', 'beneficiario', 'itens', 'formas', 'comprovacoes',
                                                              'valor_bruto', 'ISS', 'INSS', 'IR', 'total_descontos',
-                                                             'valor_liquido', 'data_pagamento', 'data_comprovacao',
-                                                             'pendencias'))
+                                                             'valor_liquido', 'data_lancamento', 'pendencias'))
         for pagamento in pagamentos:
             itens_pagamentos = pagamento.itens_pagamento
 
@@ -38,8 +37,7 @@ def pagamentos(request, id_projeto):
                                                  lista_formas_pagamento, lista_formas_comprovacao,
                                                  pagamento.valor_bruto_pagamento, pagamento.valor_ISS, pagamento.valor_INSS,
                                                  pagamento.valor_IR, pagamento.total_descontos, pagamento.valor_liquido,
-                                                 pagamento.data_pagamento, pagamento.data_efetivacao,
-                                                 pagamento.pendencias_pagamento)
+                                                 pagamento.data_lancamento, pagamento.pendencias_pagamento)
                 lista_pagamentos.append(detalhamento)
 
     return render(request, 'pagamento/pagamentos.html', {'lista_pagamentos':lista_pagamentos,
