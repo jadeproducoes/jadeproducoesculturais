@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
 from pagamento.models import *
@@ -14,44 +16,37 @@ def pagamentos(request, id_projeto):
     lista_pagamentos = False
     projeto = Projeto.objects.get(pk=id_projeto)
     valor_total_orcamento = Orcamento.objects.filter(projeto_associado=projeto, orcamento_escolhido=True)[0].valor_liquido
+    Pagamento.objects.filter(id_pessoa=None).delete()
     pagamentos = Pagamento.objects.filter(id_projeto=projeto).order_by('-data_pagamento')
     valor_total_pagamentos = 0
 
-    if pagamentos: #.count() > 0:
-        #for pagamento in pagamentos:
-        #    valor_pagamento = ItemPagamento.objects.filter(id_pagamento=pagamento).aggregate(somatorio=Sum('valor_bruto_pagamento'))
-        #    if valor_pagamento['somatorio']:
-        #        valor_total_pagamentos += valor_pagamento['somatorio']
-        valor_total_pagamentos += [pagamento.valor_bruto_pagamento for pagamento in pagamentos][0]
-
+    if pagamentos:
+        valor_total_pagamentos = sum([pagamento.valor_bruto_pagamento for pagamento in pagamentos])
         lista_pagamentos = []
-        # Itens de cada pagamento id_pagamento, itens_pagamento, beneficiario, valor_bruto,ISS, INSS,IR, valor_liquido,
-        # data_pagamento, forma_pagamento, data_comprovacao, forma_comprovacao, pendencias
-
+        DetalhesPagamento = namedtuple('DetalhesPagamento', ('id', 'beneficiario', 'itens', 'formas', 'comprovacoes',
+                                                             'valor_bruto', 'ISS', 'INSS', 'IR', 'total_descontos',
+                                                             'valor_liquido', 'data_pagamento', 'data_comprovacao',
+                                                             'pendencias'))
         for pagamento in pagamentos:
-            # recupera os itens do padamento para apresentar um texto curto para cada uma na lista
-            itens_pagamentos = ItemPagamento.objects.filter(id_pagamento=pagamento.id)
-            qtde_itens = itens_pagamentos.count()
-            conta_itens = 0
-            lista_itens = ""
-            valor_pagamento = 0
+            itens_pagamentos = pagamento.itens_pagamento
 
-            if qtde_itens > 0:
-                for item in itens_pagamentos:
-                    lista_itens += (str(item.id_rubrica))
-                    conta_itens += 1
-                    if conta_itens < qtde_itens:
-                        lista_itens += "\n"
-                    valor_pagamento += item.valor_bruto_pagamento
-            linha_item = [pagamento.id, lista_itens, pagamento.id_pessoa, valor_pagamento,
-                          pagamento.data_pagamento, pagamento.pendencias_pagamento]
-            lista_pagamentos.append(linha_item)
+            if itens_pagamentos:
+                lista_itens_pagamento = "\n".join([str(item) for item in itens_pagamentos])
+                lista_formas_pagamento = "\n".join([str(forma) for forma in pagamento.formas_pagamento])
+                lista_formas_comprovacao = "\n".join([str(comprova) for comprova in pagamento.formas_comprovacao])
+                detalhamento = DetalhesPagamento(pagamento.id, pagamento.id_pessoa, lista_itens_pagamento,
+                                                 lista_formas_pagamento, lista_formas_comprovacao,
+                                                 pagamento.valor_bruto_pagamento, pagamento.valor_ISS, pagamento.valor_INSS,
+                                                 pagamento.valor_IR, pagamento.total_descontos, pagamento.valor_liquido,
+                                                 pagamento.data_pagamento, pagamento.data_efetivacao,
+                                                 pagamento.pendencias_pagamento)
+                lista_pagamentos.append(detalhamento)
 
     return render(request, 'pagamento/pagamentos.html', {'lista_pagamentos':lista_pagamentos,
                                                          'projeto':projeto,
                                                          'valor_total_orcamento':valor_total_orcamento,
                                                          'valor_total_pagamentos':valor_total_pagamentos,
-                                                         'saldo': (valor_total_orcamento - valor_total_pagamentos),
+                                                         'saldo': (float(valor_total_orcamento) - float(valor_total_pagamentos)),
                                                          'tabelaIRRF':tabela_ativa_IRRF()})
 
 def pagamento(request, id_pagamento):

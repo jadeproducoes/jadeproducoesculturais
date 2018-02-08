@@ -26,41 +26,43 @@
                   <thead>
                     <tr align="center" valign="middle" bgcolor="#ADD8E6">
                       <th scope="col">Nr</th>
-                      <th scope="col">Item(s)</th>
                       <th scope="col">Beneficiário(a)</th>
+                      <th scope="col">Item(s)</th>
+                      <th scope="col">Forma de <br>pagamento</th>
+                      <th scope="col">Forma de <br>comprovação</th>
                       <th scope="col">Valor bruto</th>
                       <th scope="col">ISS</th>
                       <th scope="col">INSS</th>
                       <th scope="col">IR</th>
+                      <th scope="col">Total dos<br>descontos</th>
                       <th scope="col">Valor líquido</th>
                       <th scope="col">Data do <br>pagamento</th>
-                      <th scope="col">Forma de <br>pagamento</th>
                       <th scope="col">Data do <br>comprovação</th>
-                      <th scope="col">Forma de <br>comprovação</th>
-                      <th scope="col">Editar</th>
                       <th scope="col">Pendencias</th>
+                      <th scope="col">Editar</th>
                       <td scope="col">Eliminar</td>
                     </tr>
                   </thead>
                   <tbody>
-                    {% for id_pagamento, itens_pagamento, beneficiario, valor_bruto,ISS, INSS,IR, valor_liquido,
-                    data_pagamento, forma_pagamento, data_comprovacao, forma_comprovacao, pendencias in lista_pagamentos%}
-                        <tr bgcolor="{{pendencias.cor}}">
+                    {% for pagamento in lista_pagamentos %}
+                        <tr bgcolor="{{pagamento.pendencias.cor}}">
                           <td align="center">{{forloop.counter}}</td>
-                          <td align="left">{{itens_pagamento|linebreaks}}</td>
-                          <td align="left">{{beneficiario}}</td>
-                          <td align="center">{{valor_bruto}}</td>
-                          <td align="center">{{ISS}}</td>
-                          <td align="center">{{INSS}}</td>
-                          <td align="center">{{IR}}</td>
-                          <td align="center">{{data_pagamento|date:"d/m/Y"}}</td>
-                          <td align="center">{{forma_pagamento}}</td>
-                          <td align="center">{{data_comprovacao}}</td>
-                          <td align="center">{{forma_comprovacao}}</td>
-                          <td align="center"><a href="{% url 'pagamento' id_pagamento=id_pagamento %}">Editar</a></td>
-                          <td align="center">{{pendencias.msg|linebreaks}}</td>
+                          <td align="left">{{pagamento.beneficiario}}</td>
+                          <td align="left">{{pagamento.itens|linebreaks}}</td>
+                          <td align="left">{{pagamento.formas|linebreaks}}</td>
+                          <td align="left">{{pagamento.comprovacoes|linebreaks}}</td>
+                          <td align="center">{{pagamento.valor_bruto|floatformat:2}}</td>
+                          <td align="center">{{pagamento.ISS|floatformat:2}}</td>
+                          <td align="center">{{pagamento.INSS|floatformat:2}}</td>
+                          <td align="center">{{pagamento.IR|floatformat:2}}</td>
+                          <td align="center">{{pagamento.total_descontos|floatformat:2}}</td>
+                          <td align="center">{{pagamento.valor_liquido|floatformat:2}}</td>
+                          <td align="center">{{pagamento.data_pagamento|date:"d/m/Y"}}</td>
+                          <td align="center">{{pagamento.data_comprovacao|date:"d/m/Y"}}</td>
+                          <td align="center">{{pagamento.pendencias.msg|linebreaks}}</td>
+                          <td align="center"><a href="{% url 'pagamento' id_pagamento=pagamento.id %}">Editar</a></td>
                           <td align="center">
-                              <a href="{% url 'eliminapagamento' id_pagamento=id_pagamento %}">
+                              <a href="{% url 'eliminapagamento' id_pagamento=pagamento.id %}">
                                 <button>X</button>
                               </a>
                           </td>

@@ -24,6 +24,7 @@ class Pagamento(models.Model):
     cobrar_ISS = models.BooleanField("Cobra ISS?", default=True)
     cobrar_INSS = models.BooleanField("Cobrar INSS?", default=False)
     data_pagamento = models.DateField("Data do pagamento", default=timezone.now)
+    data_efetivacao = models.DateField("Data do efetivação", default=timezone.now)
     pendente = models.BooleanField("Pagamento pendente?", default=True, null=False, blank=False)
     observacoes = models.TextField("Observações", max_length=200, null=True, blank=True)
 
@@ -72,9 +73,9 @@ class Pagamento(models.Model):
     def valor_bruto_pagamento(self):
         total = ItemPagamento.objects.filter(id_pagamento=self).aggregate(somatorio=Sum('valor_bruto_pagamento'))
         if total['somatorio']:
-            valor = total['somatorio']
+            valor = float(total['somatorio'])
         else:
-            valor = 0.0
+            valor = float(0.0)
         return valor
 
     @property
@@ -168,6 +169,8 @@ class Pagamento(models.Model):
             pendencias['existentes'] = True
             pendencias['cor'] = cor
             pendencias['msg'] = mensagem
+        else:
+            pendencias['msg'] = '--'
 
         return pendencias
 
