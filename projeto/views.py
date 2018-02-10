@@ -4,6 +4,8 @@ from django.core.files.storage import FileSystemStorage
 
 from carregaarquivo.forms import FormExibePlanilha
 from carregaarquivo.models import Arquivo, FuncaoArquivo, TipoArquivo
+from orcamento.models import Orcamento
+from pagamento.models import Pagamento
 from .models import Projeto, Tarefa
 from utils.utilitarios import *
 from openpyxl import Workbook
@@ -147,4 +149,11 @@ def exibir_planilha(request, id_projeto, id_arquivo):
 
     return render(request, 'projeto/exibe_planilha.html', {'planilha':planilha,'arquivo':arquivo,
                                                            'formulario':formulario, 'projeto':projeto})
+
+def relatorios(request, id_projeto):
+    projeto = Projeto.objects.get(pk=id_projeto)
+    orcamento = Orcamento.objects.filter(projeto_associado=projeto, orcamento_escolhido=True)
+    pagamentos = Pagamento.objects.filter(id_orcamento=orcamento)
+
+
 

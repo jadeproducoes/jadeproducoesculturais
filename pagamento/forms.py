@@ -118,3 +118,4 @@ class FormularioFormaComprovacao(forms.ModelForm):
             raise ValidationError(_(msg))
 
         return tipo_comprovacao
+

@@ -12,6 +12,7 @@
                     <th colspan="3">Orcamentos</th>
                     <th>Pagamentos</th>
                     <th>Tarefas</th>
+                    <th>Relatórios</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,6 +25,7 @@
                         <td><a href="{% url 'planilhascarregadas' id_projeto=projeto.id %}">Carregar planilha</a> </td>
                         <td><a href="{% url 'pagamentos' id_projeto=projeto.id %}">Pagamento</a></td>
                         <td><a href="{% url 'tarefas' id_projeto=projeto.id %}">Tarefas</a></td>
+                        <td><a href="{% url 'relatorios' id_projeto=projeto.id %}">Relatórios</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

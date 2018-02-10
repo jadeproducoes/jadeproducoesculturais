@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^(?P<id_projeto>[0-9]+)/planilhascarregadas$', views.planilhascarregadas, name='planilhascarregadas'),
     url(r'^(?P<id_projeto>[0-9]+)/exibir_planilha/(?P<id_arquivo>[0-9]+)/$', views.exibir_planilha, name='exibir_planilha'),
     url(r'^(?P<id_projeto>[0-9]+)/carrega_orcamento$', views.carrega_orcamento, name='carrega_orcamento'),
+    url(r'^(?P<id_projeto>[0-9]+)/relatorios$', views.relatorios, name='relatorios'),
 ]

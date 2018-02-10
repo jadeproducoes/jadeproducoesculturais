@@ -1,0 +1,11 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    {% if projeto %}
+
+    {% else %}
+        <p>Nenhum projeto indicado. <a href="{% url 'index' %}">Retornar aos projetos</a></p>
+    {% endif %}
+
+{% endblock %}

@@ -7,3 +7,6 @@ class FormListaProjetos(forms.Form):
                                                 widget=forms.Select(),
                                                 initial=projeto_ativo,
                                                 label='Projeto')
+
+class FormGerarRelatoriosFinanceiros(forms.Form):
+    valor_aplicacao = forms.FloatField("Informe o valor da aplicação: ", required=True)
