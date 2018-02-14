@@ -9,4 +9,4 @@ class FormListaProjetos(forms.Form):
                                                 label='Projeto')
 
 class FormGerarRelatoriosFinanceiros(forms.Form):
-    valor_aplicacao = forms.FloatField("Informe o valor da aplicação: ", required=True)
+    valor_aplicacao = forms.FloatField(label="Informe o valor da aplicação", required=True)

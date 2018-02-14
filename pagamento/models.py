@@ -48,6 +48,13 @@ class Pagamento(models.Model):
         return str_itens
 
     @property
+    def lista_desc_itens_pagamento(self):
+        str_itens = []
+        if self.itens_pagamento:
+            str_itens = [rubrica.descricao_rubrica for rubrica in self.itens_pagamento]
+        return str_itens
+
+    @property
     def formas_pagamento(self):
         return FormaDePagamento.objects.filter(id_pagamento=self)
 
@@ -59,6 +66,13 @@ class Pagamento(models.Model):
         return str_forma
 
     @property
+    def identificacao_formas_pagamento(self):
+        str_id = ""
+        if self.formas_pagamento:
+            str_id = "\n".join([forma.nr_documento for forma in self.formas_pagamento])
+        return str_id
+
+    @property
     def formas_comprovacao(self):
         return FormaComprovacao.objects.filter(id_pagamento=self)
 
@@ -68,6 +82,20 @@ class Pagamento(models.Model):
         if self.formas_comprovacao:
             str_forma = [str(forma) for forma in self.formas_comprovacao]
         return str_forma
+
+    @property
+    def descricao_docs_comprovacao(self):
+        str_desc = ""
+        if self.formas_comprovacao:
+            str_desc = ";".join([forma.descricao_comprovacao for forma in self.formas_comprovacao])
+        return str_desc
+
+    @property
+    def identificacao_docs_comprovacao(self):
+        str_desc = ""
+        if self.formas_comprovacao:
+            str_desc = "\n".join([forma.nr_doc_comprovacao for forma in self.formas_comprovacao])
+        return str_desc
 
     @property
     def valor_bruto_pagamento(self):
@@ -182,6 +210,7 @@ class Pagamento(models.Model):
 
         return pendencias
 
+
 class ItemPagamento(models.Model):
 
     id_pagamento = models.ForeignKey(Pagamento, on_delete=models.CASCADE, null=True, blank=False)
@@ -190,6 +219,10 @@ class ItemPagamento(models.Model):
     quantidade = models.DecimalField("Quantidade do item", decimal_places=2, max_digits=10,
                                           default=0) # informar quantidade deve calcular automaticamente o valor
     valor_bruto_pagamento = models.DecimalField("Valor a pagar (R$)", decimal_places=2, max_digits=10, default=0)  # colocar limites
+
+    @property
+    def descricao_rubrica(self):
+        return self.id_rubrica.descricao_rubrica
 
     @property
     def valor_usado_rubrica(self):
@@ -241,6 +274,8 @@ class FormaDePagamento(models.Model):
         desc_forma = [(forma) for forma in formaspagamento() if self.forma in forma][0][1]
         return desc_forma
 
+
+
     class Meta:
         verbose_name_plural = "Formas de Pagamento"
         verbose_name = "Forma de Pagamento"
@@ -254,6 +289,7 @@ class FormaComprovacao(models.Model):
     nr_doc_comprovacao = models.CharField("Nr documento de comprovação", max_length=15, null=True, blank=False)
     valor = models.DecimalField("Valor do documento(R$)", decimal_places=2, max_digits=10,
                                 default=0.0)  # colocar limites
+    descricao_comprovacao = models.TextField("Descrição conforme documento fiscal:", blank=True)
     data_emissao = models.DateField("Data da emissão", default=timezone.now, blank=False, null=False)
     data_recebimento = models.DateField("Data do recebimento", null=True, blank=True)
 
@@ -262,5 +298,6 @@ class FormaComprovacao(models.Model):
         nr_doc = self.nr_doc_comprovacao if self.nr_doc_comprovacao else "0000"
         dt_emissao = self.data_emissao.strftime("%d/%m/%y") if self.data_emissao else "--"
         dt_recebimento = self.data_recebimento.strftime("%d/%m/%y") if self.data_recebimento else "--"
+        descricao_doc_fiscal = "Descrição do(s) itens: " + self.descricao_comprovacao if self.descricao_comprovacao else ""
         return "{} nº {} (R$ {})\nEmitida em: {}\nRecebida em: {}".format(desc_forma, nr_doc, float(self.valor),
-                                                                          dt_emissao, dt_recebimento)
+                                                                          dt_emissao, dt_recebimento, descricao_doc_fiscal)

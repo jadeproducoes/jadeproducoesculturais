@@ -24,6 +24,10 @@ class Pessoa(models.Model):
         verbose_name = "Pessoa"
         ordering = ["nome"]
 
+    @property
+    def tipo_pessoa(self):
+        return 'Pessoa Física' if self.pessoa_fisica else 'Pessoa Jurídica'
+
 # Cadastro de areas culturais
 class AreaCultural(models.Model):
     area_cultural = models.CharField("área cultural", max_length=30, unique=True)
