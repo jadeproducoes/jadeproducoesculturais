@@ -212,7 +212,7 @@ def relatorios(request, id_projeto):
                         idx_col_A +=1
                 l_final = 1
                 dim_align_cols = (AtributosCelula(10,'top','center',True), AtributosCelula(10,'top','center',True),
-                                  AtributosCelula(40,'top','left',True), AtributosCelula(10,'top','right', True))
+                                  AtributosCelula(50,'top','left',True), AtributosCelula(10,'top','center', True))
                 for nr_linha, linha in enumerate(relatorio_conciliacao):
                     idx_col_A = ord('A')
                     for nr_coluna, coluna in enumerate(linha):

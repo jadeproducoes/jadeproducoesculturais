@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5af6be34-55c3-47be-b6c1-44db4a1d60e4" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/carregaarquivo/views.py" afterPath="$PROJECT_DIR$/carregaarquivo/views.py" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change beforePath="$PROJECT_DIR$/pagamento/models.py" afterPath="$PROJECT_DIR$/pagamento/models.py" />
-      <change beforePath="$PROJECT_DIR$/projeto/forms.py" afterPath="$PROJECT_DIR$/projeto/forms.py" />
-      <change beforePath="$PROJECT_DIR$/projeto/templates/projeto/relatoriosfinanceiros.html" afterPath="$PROJECT_DIR$/projeto/templates/projeto/relatoriosfinanceiros.html" />
+      <change beforePath="$PROJECT_DIR$/media/relatorios.xlsx" afterPath="$PROJECT_DIR$/media/relatorios.xlsx" />
       <change beforePath="$PROJECT_DIR$/projeto/views.py" afterPath="$PROJECT_DIR$/projeto/views.py" />
-      <change beforePath="$PROJECT_DIR$/utils/models.py" afterPath="$PROJECT_DIR$/utils/models.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,8 +39,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/projeto/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="214" column="111" lean-forward="false" selection-start-line="214" selection-start-column="111" selection-end-line="214" selection-end-column="111" />
+            <state relative-caret-position="183">
+              <caret line="218" column="76" lean-forward="true" selection-start-line="218" selection-start-column="76" selection-end-line="218" selection-end-column="76" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
               </folding>
@@ -758,8 +753,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/projeto/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="214" column="111" lean-forward="false" selection-start-line="214" selection-start-column="111" selection-end-line="214" selection-end-column="111" />
+        <state relative-caret-position="183">
+          <caret line="218" column="76" lean-forward="true" selection-start-line="218" selection-start-column="76" selection-end-line="218" selection-end-column="76" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
           </folding>
