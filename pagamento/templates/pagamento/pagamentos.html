@@ -38,6 +38,7 @@
                       <th scope="col">Valor líquido</th>
                       <th scope="col">Data do <br>lançamento</th>
                       <th scope="col">Pendencias</th>
+                      <th scope="col">Emitir RPA</th>
                       <th scope="col">Editar</th>
                       <td scope="col">Eliminar</td>
                     </tr>
@@ -58,6 +59,13 @@
                           <td align="center">{{pagamento.valor_liquido|floatformat:2}}</td>
                           <td align="center">{{pagamento.data_lancamento|date:"d/m/Y"}}</td>
                           <td align="center">{{pagamento.pendencias.msg|linebreaks}}</td>
+                          <td align="center">
+                              {% if pagamento.beneficiario.pessoa_fisica %}
+                                <a href="{% url 'emitir_rpa' id_projeto=projeto.id id_pagamento=pagamento.id %}">Emitir RPA</a>
+                              {% else %}
+                                Emissor de NF
+                              {% endif%}
+                          </td>
                           <td align="center"><a href="{% url 'pagamento' id_pagamento=pagamento.id %}">Editar</a></td>
                           <td align="center">
                               <a href="{% url 'eliminapagamento' id_pagamento=pagamento.id %}">

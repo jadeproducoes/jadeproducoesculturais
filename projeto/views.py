@@ -245,10 +245,8 @@ def relatorios(request, id_projeto):
 
                 response = HttpResponse(open('media/relatorios.xlsx', mode='rb', buffering=True), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
                 response['Content-Disposition'] = 'attachment; filename=relatorios.xlsx'
-                #response.write()   write()
                 return response
 
-                return redirect('index')
         else:
             formulario = FormGerarRelatoriosFinanceiros()
     else:
