@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^novaformacomprovacao/(?P<id_forma_comprovacao>[0-9]+)/$', views.novaformacomprovacao, name='novaformacomprovacao'),
     url(r'^editaformacomprovacao/(?P<id_forma_comprovacao>[0-9]+)/$', views.editaformacomprovacao, name='editaformacomprovacao'),
     url(r'^eliminaformacomprovacao/(?P<id_forma_comprovacao>[0-9]+)/$', views.eliminaformacomprovacao, name='eliminaformacomprovacao'),
-    url(r'^projeto/(?P<id_projeto>[0-9]+)/emitir_rpa/(?P<id_pagamento>[0-9]+)/$', views.emitir_rpa, name='emitir_rpa'),
+    url(r'^emitir_rpa/(?P<id_pagamento>[0-9]+)/$', views.emitir_rpa, name='emitir_rpa'),
 ]

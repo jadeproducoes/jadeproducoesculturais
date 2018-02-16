@@ -61,7 +61,7 @@
                           <td align="center">{{pagamento.pendencias.msg|linebreaks}}</td>
                           <td align="center">
                               {% if pagamento.beneficiario.pessoa_fisica %}
-                                <a href="{% url 'emitir_rpa' id_projeto=projeto.id id_pagamento=pagamento.id %}">Emitir RPA</a>
+                                <a href="{% url 'emitir_rpa' id_pagamento=pagamento.id %}">Emitir RPA</a>
                               {% else %}
                                 Emissor de NF
                               {% endif%}

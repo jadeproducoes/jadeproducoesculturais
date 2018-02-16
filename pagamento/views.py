@@ -223,16 +223,14 @@ def alterarbenefiario(request, id_pagamento):
     return render(request, 'pagamento/beneficiariopagamento.html', {'formulario':formulario, 'id_pagamento':id_pagamento})
 
 
-def emitir_rpa(request,id_projeto, id_pagamento, ):
+def emitir_rpa(request, id_pagamento):
     pagamento = Pagamento.objects.get(pk=id_pagamento)
-    if pagamento:
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="RPA-' + str(pagamento.id_pessoa) + '.pdf"'
-        p = canvas.Canvas(response)
-        p.drawString(100,100, "Projeto: " + str(pagamento.id_) + "RPA do " + str(pagamento.id_pessoa))
-        p.showPage()
-        p.save()
-        return response
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="RPA-' + str(pagamento.id_pessoa) + '.pdf"'
+    p = canvas.Canvas(response)
+    p.drawString(20,20, "Projeto: " + str(pagamento.id_projeto) + " RPA do " + str(pagamento.id_pessoa))
+    p.showPage()
+    p.save()
+    return response
 
-    return render(request, 'pagamento/pagamentos.html', {'projeto':Projeto.objects.get(pk=id_projeto)})
 
