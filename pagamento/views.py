@@ -3,11 +3,11 @@ from django.http import HttpResponse
 from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
 from reportlab.pdfgen import canvas
-
 from pagamento.models import *
 from projeto.models import Projeto
 from orcamento.models import Orcamento, RubricaOrcamento
 from .forms import *
+from utils.utilitarios import dExtenso
 
 # Create your views here.
 def index(request):
@@ -225,12 +225,9 @@ def alterarbenefiario(request, id_pagamento):
 
 def emitir_rpa(request, id_pagamento):
     pagamento = Pagamento.objects.get(pk=id_pagamento)
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="RPA-' + str(pagamento.id_pessoa) + '.pdf"'
-    p = canvas.Canvas(response)
-    p.drawString(20,20, "Projeto: " + str(pagamento.id_projeto) + " RPA do " + str(pagamento.id_pessoa))
-    p.showPage()
-    p.save()
-    return response
-
-
+    vias = ('1a via','2a via')
+    nr_extenso = dExtenso()
+    val_liq_extenso = nr_extenso.get_decimal_extenso(str(round(pagamento.valor_liquido,2)),'reais','centavos')
+    return render(request, 'pagamento/Modelo-RPA.html', {'pagamento':pagamento,
+                                                         'vias':vias,
+                                                         'val_liq_extenso':val_liq_extenso})
