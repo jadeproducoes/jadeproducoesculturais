@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^editaformacomprovacao/(?P<id_forma_comprovacao>[0-9]+)/$', views.editaformacomprovacao, name='editaformacomprovacao'),
     url(r'^eliminaformacomprovacao/(?P<id_forma_comprovacao>[0-9]+)/$', views.eliminaformacomprovacao, name='eliminaformacomprovacao'),
     url(r'^emitir_rpa/(?P<id_pagamento>[0-9]+)/$', views.emitir_rpa, name='emitir_rpa'),
+    url(r'^dados_emissao_nota_fiscal/(?P<id_pagamento>[0-9]+)/$', views.dados_emissao_nota_fiscal, name='dados_emissao_nota_fiscal'),
 ]

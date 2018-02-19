@@ -63,7 +63,7 @@
                               {% if pagamento.beneficiario.pessoa_fisica %}
                                 <a href="{% url 'emitir_rpa' id_pagamento=pagamento.id %}">Emitir RPA</a>
                               {% else %}
-                                Emissor de NF
+                                <a href="{% url 'dados_emissao_nota_fiscal' id_pagamento=pagamento.id %}">Dados NF</a>
                               {% endif%}
                           </td>
                           <td align="center"><a href="{% url 'pagamento' id_pagamento=pagamento.id %}">Editar</a></td>

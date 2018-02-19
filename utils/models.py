@@ -3,6 +3,11 @@ from datetime import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
+UFs =(('AC','Acre'),('AL','Alagoas'),('AP','Amapá'),('AM','Amazonas'), ('BA','Bahia'),('CE','Ceará'),
+      ('DF','Distrito Federal'),('ES','Espírito Santo'),('GO','Goiás'),('MA','Maranhão'),('MT','Mato Grosso'),
+      ('MS','Mato Grosso do Sul'),('MG','Minas Gerais'),('PA','Pará'),('PB','Paraíba'),('PR','Paraná'),
+      ('PE','Pernambuco'),('PI','Piauí'),('RJ','Rio de Janeiro'),('RN','Rio Grande do Norte'),('RS','Rio Grande do Sul'),
+      ('RO','Rondônia'),('RR','Roraima'),('SC','Santa Catarina'),('SP','São Paulo'),('SE','Sergipe'),('TO','Tocantins'))
 
 # Classe generica de pessoas fisicas ou juridicas
 class Pessoa(models.Model):
@@ -11,7 +16,11 @@ class Pessoa(models.Model):
     email = models.EmailField("Email", max_length=150, null=True, blank=True)
     fone1 = models.CharField("Fone (1)", max_length=40, null=True, blank=True)
     fone2 = models.CharField("Fone (2)", max_length=40, null=True, blank=True)
-    endereco = models.CharField("endereço completo", max_length=200, null=True, blank=True)
+    endereco = models.CharField("Endereço completo", max_length=200, null=True, blank=True)
+    bairro = models.CharField("Bairro", max_length=70, null=True, blank=True)
+    municipio = models.CharField("Município", max_length=100, null=True, blank=True)
+    cep = models.CharField("CEP", max_length=7, null=True, blank=True)
+    uf = models.CharField("UF:", max_length=2, null=True, blank=True, choices=UFs)
     cpfoucnpj = models.CharField("CPF ou CNPJ", max_length=20, null=True, blank=True)
     identidadeouinscricao = models.CharField("Identidade ou Inscrição Estadual", max_length=30, null=True, blank=True)
     redesocial = models.URLField("Link rede social", null=True, blank=True)

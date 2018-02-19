@@ -88,7 +88,9 @@
                 </table>
                 {% if pagamento.id_pessoa.pessoa_fisica and rubricas_pagamento.count > 0%}
                     <p><b><a href="{% url 'editadescontos' id_pagamento=pagamento.id %}">Alterar descontos de impostos</a> -
-                            <a href="{% url 'cancelardescontos' id_pagamento=pagamento.id %}">Cancelar descontos</a></b></p>
+                          <a href="{% url 'cancelardescontos' id_pagamento=pagamento.id %}">Cancelar descontos</a></b> -
+                          <a href="{% url 'emitir_rpa' id_pagamento=pagamento.id %}">Emitir RPA</a>
+                    </p>
                     {% if pagamento.valor_ISS == 0 %}
                         <div class="alert alert-danger">
                             O(A) beficiário(a) é PESSOA FÍSICA, mas não está sendo cobrado o <b>ISS</b> sobre o pagamento

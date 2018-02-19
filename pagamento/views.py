@@ -231,3 +231,12 @@ def emitir_rpa(request, id_pagamento):
     return render(request, 'pagamento/Modelo-RPA.html', {'pagamento':pagamento,
                                                          'vias':vias,
                                                          'val_liq_extenso':val_liq_extenso})
+
+def dados_emissao_nota_fiscal(request, id_pagamento):
+    pagamento = Pagamento.objects.get(pk=id_pagamento)
+    itens_pagamento = ()
+    item_pagamento = namedtuple('ItemPagamento', ('rubrica', 'quantidade', 'valor_solicitado', 'unidade',
+                                'valor_bruto'))
+    #for item in pagamento.itens_pagamento:
+
+    return render(request, 'pagamento/dados_emissao_nota_fiscal.html', {'pagamento':pagamento})

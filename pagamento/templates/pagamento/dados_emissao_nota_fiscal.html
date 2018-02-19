@@ -1,0 +1,41 @@
+{% extends 'jadebase.html' %}
+{% load l10n %}
+
+{% block conteudo %}
+    <div>
+        <p><b>DADOS DO DESTINATÁRIO E/OU TOMADOR DO SERVIÇO</b></p>
+        <p>Nome / Razão Social: {{pagamento.id_projeto.cliente_projeto.nome}}</p>
+        <p>CPF/CNPJ: {{pagamento.id_projeto.cliente_projeto.cpfoucnpj}}</p>
+        <p>Inscrição Estadual: {{pagamento.id_projeto.cliente_projeto.identidadeouinscricao}}</p>
+        <p>Endereço: {{pagamento.id_projeto.cliente_projeto.endereco}}</p>
+        <p>Bairro / Distrito: {{pagamento.id_projeto.cliente_projeto.bairro}}</p>
+        <p>Município: {{pagamento.id_projeto.cliente_projeto.municipio}}</p>
+        <p>UF: {{pagamento.id_projeto.cliente_projeto.uf}}</p>
+        <p>CEP: {{pagamento.id_projeto.cliente_projeto.cep}}</p>
+        <p><b>PRODUTOS E SERVIÇOS DA NFAe</b></p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td>Item</td>
+                    <td>Descrição</td>
+                    <td>Qtde.</td>
+                    <td>Val. unit. (R$)</td>
+                    <td>Unidada</td>
+                    <td>Val. total (R$)</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in pagamento.itens_pagamento %}
+                    <tr><td>{{forloop.counter}}</td>
+                        <td>{{item.descricao_rubrica}}</td>
+                        <td>{{item.quantidade}}</td>
+                        <td>{{item.id_rubrica.valor_solicitado}}</td>
+                        <td>{{item.id_rubrica.unidade_medida}}</td>
+                        <td>{{item.valor_bruto_pagamento}}</td>
+                    </tr>
+                {% endfor %}
+                <tr><td colspan="5">Total do pagamento (R$):</td><td>{{pagamento.valor_bruto_pagamento}}</td></tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
